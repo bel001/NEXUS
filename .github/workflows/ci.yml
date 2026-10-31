@@ -11,13 +11,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        # ubuntu-24.04 fijado a propósito: ubuntu-latest migra a Ubuntu 26
+        # desde 2026-10-19. No volver a ubuntu-latest sin revisar esa migración.
+        os: [ubuntu-24.04, windows-latest]
         toolchain: ["1.88", stable]
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@master

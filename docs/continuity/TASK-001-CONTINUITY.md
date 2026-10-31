@@ -460,3 +460,91 @@ Debe conservarse la salida completa, revisar el JSON antes de incorporarlo y
 actualizar este documento con versiones exactas, conteo de tests, estados WMI,
 incidencias y hash del archivo. Solo entonces pueden reevaluarse HD-AUD-002 y
 HD-AUD-007.
+
+## 20. Sesión de mantenimiento CI — 31 de octubre de 2026
+
+### 20.1 Objetivo y alcance aprobado
+
+Mantenimiento exclusivo del workflow: actualizar `actions/checkout` y fijar la
+imagen Ubuntu. Sin cambios de código Rust, dependencias, `Cargo.lock`,
+arquitectura V4.2 ni alcance de TASK-001.
+
+### 20.2 Estado de partida verificado
+
+- Rama: `main`; HEAD inicial: `e751a9d`
+  (`feat: implement TASK-001 hardware discovery`).
+- Remoto: `origin` → `https://github.com/bel001/NEXUS.git`; upstream
+  `origin/main`.
+- Ejecución CI de referencia: `41249466079`, cuatro trabajos en verde.
+- Las secciones 2, 14, 15 y 19.4 registran sesiones anteriores en las que el
+  repositorio no tenía remoto y CI no se había ejecutado. Se conservan como
+  registro histórico; el estado vigente es el de esta sección.
+
+### 20.3 Revisión del workflow completo
+
+`.github/workflows/ci.yml` tenía 38 líneas: matriz `ubuntu-latest`/
+`windows-latest` × `1.88`/`stable`, `fail-fast: false`, componentes `rustfmt` y
+`clippy`, y los cuatro comandos obligatorios con `--locked`. La ejecución
+`41249466079` emitió dos anotaciones que motivan los cambios de §20.4:
+
+| Anotación observada | Impacto | Acción |
+|---|---|---|
+| `actions/checkout@v4` apunta a Node.js 20 y se fuerza a Node.js 24 | Deprecación; el paso puede romperse al retirarse la compatibilidad | Actualizar a `@v7` |
+| `ubuntu-latest` migra a Ubuntu 26 desde 2026-10-19 | Baseline no reproducible a mitad de la migración | Fijar `ubuntu-24.04` |
+
+Hallazgos revisados y **no** modificados por estar fuera del alcance aprobado:
+
+1. `windows-latest` sigue sin fijar y tiene el mismo riesgo de rollover que
+   Ubuntu. Candidato a una tarea de mantenimiento futura.
+2. `dtolnay/rust-toolchain@master` es una referencia móvil: no reproducible byte
+   a byte. Es el uso documentado por el proyecto upstream.
+3. No existe bloque `permissions:`; el `GITHUB_TOKEN` usa los permisos por
+   defecto. Recomendado añadir `permissions: contents: read`.
+4. No hay `concurrency` ni `timeout-minutes`: pushes rápidos pueden solapar
+   ejecuciones y un cuelgue agotaría el máximo por defecto.
+5. Las acciones usan etiqueta mayor, no SHA de commit; el endurecimiento de
+   cadena de suministro queda pendiente.
+
+Se mantienen sin cambios por ser correctos: `fail-fast: false`, la matriz de dos
+sistemas × dos toolchains, `components: rustfmt, clippy`, el uso consistente de
+`--locked` y el orden fmt → check → test → clippy con `-D warnings`.
+
+### 20.4 Cambios aplicados
+
+- `.github/workflows/ci.yml`
+  - `actions/checkout@v4` → `actions/checkout@v7` (última versión `v7.0.1`;
+    etiqueta `v7` → commit `3d3c42e5aac5ba805825da76410c181273ba90b1`).
+  - `ubuntu-latest` → `ubuntu-24.04`, con comentario que documenta el motivo y
+    advierte de no volver a `ubuntu-latest` sin revisar la migración a Ubuntu 26.
+- `docs/continuity/TASK-001-CONTINUITY.md`: esta sección.
+
+No se modificaron código Rust, `Cargo.toml`, `Cargo.lock`, consultas WMI,
+contratos, ADR ni la arquitectura V4.2.
+
+### 20.5 Validaciones locales ejecutadas
+
+Todas desde la raíz del repositorio, con `Cargo.lock` versionado.
+
+| Comando | Resultado real |
+|---|---|
+| Sintaxis YAML + aserciones de matriz | PASS; `os: [ubuntu-24.04, windows-latest]`, `checkout@v7`, sin `ubuntu-latest` ni `@v4` |
+| `cargo +stable fmt --all -- --check` | PASS, exit 0 |
+| `cargo +stable check --workspace --all-targets --locked` | PASS, exit 0 |
+| `cargo +stable test --workspace --locked` | PASS, exit 0; 56 pass, 1 ignored |
+| `cargo +stable clippy --workspace --all-targets --locked -- -D warnings` | PASS, exit 0 |
+| `cargo +1.88.0 fmt --all -- --check` | PASS, exit 0 |
+| `cargo +1.88.0 check --workspace --all-targets --locked` | PASS, exit 0 |
+| `cargo +1.88.0 test --workspace --locked` | PASS, exit 0; 56 pass, 1 ignored |
+| `cargo +1.88.0 clippy --workspace --all-targets --locked -- -D warnings` | PASS, exit 0 |
+| `cargo +stable check`/`clippy --target x86_64-pc-windows-msvc` | PASS, exit 0 |
+| `cargo +1.88.0 check`/`clippy --target x86_64-pc-windows-msvc` | PASS, exit 0 |
+| `./scripts/validate.sh` | PASS, exit 0 |
+
+El conteo 56/1 es idéntico al baseline documentado: el mantenimiento no alteró
+la cobertura.
+
+### 20.6 Ejecución CI de este commit
+
+La verificación de los cuatro trabajos disparados por el commit de mantenimiento
+se registra en §20.7, en el commit de documentación inmediatamente posterior. No
+se declara verificada antes de leer el resultado real.
