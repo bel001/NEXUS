@@ -24,6 +24,11 @@ Cada valor debe incluir:
 
 Nunca representar un valor desconocido como cero.
 
+Esta regla de timestamps por valor pertenece al modelo de telemetría futura y
+no se aplica al inventario de hardware de TASK-001. `HardwareInventory` utiliza
+un único `captured_at` opcional como instante común de captura;
+`Observation<T>` no incorpora un timestamp propio.
+
 ## Policy Engine
 
 Entrada:

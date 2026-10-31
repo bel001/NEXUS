@@ -45,3 +45,21 @@
 La UI solo tendrá los comandos y permisos estrictamente necesarios. Las capacidades de Tauri reducen la superficie expuesta al frontend, pero no sustituyen la revisión de seguridad del código Rust.
 
 Referencia: https://v2.tauri.app/security/capabilities/
+
+## Controles de Hardware Discovery
+
+TASK-001 pertenece a L0 y es estrictamente de lectura:
+
+- Windows usa `SELECT` predefinidos y no acepta texto externo;
+- no se invocan métodos WMI ni PowerShell;
+- Linux solo lee interfaces locales y nunca escribe en sysfs;
+- no se ejecutan comandos o scripts auxiliares;
+- no se solicita elevación para la captura normal;
+- no hay red ni telemetría;
+- no se serializan devpaths, rutas internas, identificadores de correlación,
+  números de serie ni otros identificadores innecesarios;
+- los errores se estructuran y sanitizan antes de incluirse en el inventario.
+
+La especificación aprobada está en
+`docs/architecture/hardware-discovery.md`. Estos controles todavía deben
+implementarse y validarse.

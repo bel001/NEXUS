@@ -1,10 +1,15 @@
 # TASK-001 — Hardware Discovery read-only
 
-- Estado: Propuesta pendiente de aprobación
+- Estado: Diseño técnico aprobado; implementación no iniciada
 - Prioridad: P0
 - Plataforma: Windows 11 + Linux x86_64
 - Tipo: solo lectura
-- No iniciar hasta que el propietario del producto apruebe esta tarea.
+- Aprobación: el propietario aprobó la especificación V4 con las aclaraciones
+  V4.1 y V4.2 para preparar su implementación.
+
+La especificación vinculante está en
+`docs/architecture/hardware-discovery.md`. Aprobar el diseño no implica que la
+funcionalidad esté implementada o validada.
 
 ## Objetivo
 
@@ -38,12 +43,18 @@ Descubrir, cuando esté disponible:
 
 ## Contrato de datos
 
-Cada campo debe tener:
-- valor opcional tipado;
+Cada `Observation<T>` debe tener:
+- `value` opcional y tipado;
 - unidad cuando aplique;
-- fuente/procedencia;
-- timestamp;
-- estado (`available`, `partial`, `unsupported`, `unavailable`, `permission_denied`, `error`).
+- `status` (`available`, `partial`, `unsupported`, `unavailable`,
+  `permission_denied` o `error`);
+- `source` o procedencia;
+- detalle opcional sanitizado.
+
+`Observation<T>` no tiene timestamp propio. `HardwareInventory` contiene un
+único `captured_at` opcional que representa el instante común de captura. Se
+serializa en UTC RFC 3339 cuando el reloj civil está disponible, en coherencia
+con ADR-0005.
 
 Un valor ausente nunca se convierte en `0`, cadena vacía engañosa o valor inventado.
 
@@ -82,6 +93,19 @@ Un valor ausente nunca se convierte en `0`, cadena vacía engañosa o valor inve
 ## Entrega esperada
 
 Un comando del agente en modo diagnóstico que emita un snapshot JSON normalizado, con datos reales disponibles y estados explícitos para lo que no se pudo obtener.
+
+## Orden de implementación aprobado
+
+1. Modelos de `adaptive-domain` y `Observation<T>`.
+2. Contrato `HardwareProvider` y orquestación.
+3. Adaptador Linux.
+4. Adaptador Windows.
+5. Integración con `adaptive-agent`.
+6. Serialización JSON versionada.
+7. Pruebas, fixtures y CI en Linux y Windows.
+
+Se conservan `adaptive-domain`, `adaptive-hardware-discovery`,
+`adaptive-platform-linux`, `adaptive-platform-windows` y `adaptive-agent`.
 
 ## Definición de terminado
 

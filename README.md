@@ -2,7 +2,7 @@
 
 > Nombre comercial pendiente. Repositorio de trabajo para una plataforma de optimización adaptativa de PC y laptops.
 
-**Estado:** pre-alpha · **Primera plataforma:** Windows + Linux · **Primera entrega:** arquitectura y scaffold · **Modo actual:** solo lectura.
+**Estado:** pre-alpha · **Primera plataforma:** Windows + Linux · **Primera entrega funcional:** Hardware Discovery · **Modo previsto:** solo lectura.
 
 ## Propósito
 
@@ -22,11 +22,13 @@ No promete convertir hardware distinto en Apple Silicon ni superar universalment
 
 ## Estado del repositorio
 
-Este scaffold contiene documentación, contratos de arquitectura iniciales, un workspace Rust mínimo y la especificación de la primera tarea. **No contiene todavía optimizaciones que cambien el sistema.**
+Este scaffold contiene documentación, un workspace Rust mínimo y el diseño
+técnico aprobado de Hardware Discovery. **TASK-001 todavía no está
+implementada y no existen optimizaciones que cambien el sistema.**
 
 ## Requisitos de desarrollo
 
-- Rust stable compatible con Edition 2024.
+- Rust 1.88 como MSRV provisional y Rust stable para validación.
 - Git.
 - Node.js LTS y pnpm/npm solo cuando se incorpore la interfaz Tauri.
 - Windows 11 y una distribución Linux de escritorio para validación real.
@@ -42,11 +44,13 @@ cargo clippy --workspace --all-targets -- -D warnings
 
 En PowerShell se pueden ejecutar los mismos comandos. También están disponibles `scripts/validate.sh` y `scripts/validate.ps1`.
 
-## Primera tarea propuesta
+## Primera tarea aprobada para implementación
 
-Leer `docs/tasks/TASK-001-hardware-discovery.md` y `docs/prompts/TASK-001-agent-prompt.md`.
+Leer `docs/architecture/hardware-discovery.md`, los ADR-0005 a ADR-0007 y
+`docs/tasks/TASK-001-hardware-discovery.md`.
 
-No comenzar su implementación hasta aprobar la entrega de arquitectura y el alcance de la tarea.
+El diseño y el alcance han sido aprobados. La implementación y validación
+siguen pendientes y deben respetar el orden de siete etapas documentado.
 
 ## Estructura
 

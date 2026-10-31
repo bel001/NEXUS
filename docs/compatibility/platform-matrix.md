@@ -8,7 +8,7 @@
 | GPU | Best effort | Best effort |
 | Discos | Best effort | Best effort |
 | Batería básica | Portátil | Portátil |
-| Temperatura | Sensor/driver disponible | hwmon/sensor disponible |
+| Temperatura (fase posterior; fuera de TASK-001) | No TASK-001 | No TASK-001 |
 | Perfil energético | API Windows | D-Bus si power-profiles-daemon |
 | Cambios energéticos | Fase posterior | Fase posterior |
 | Control de ventiladores | No MVP | No MVP |
@@ -34,3 +34,12 @@
 - Linux con ambos paquetes instalados, verificando detección de conflicto.
 
 No se declarará compatibilidad universal hasta probar equipos físicos y documentar limitaciones.
+
+## Estado de TASK-001
+
+El diseño técnico está aprobado. La implementación y validación de esta matriz
+siguen pendientes. Compilar en una plataforma no valida la otra.
+
+La CI prevista cubrirá Windows y Linux con Rust 1.88 y stable, usando
+`Cargo.lock`. La compatibilidad solo se declarará después de ejecutar las
+pruebas y la matriz manual.
