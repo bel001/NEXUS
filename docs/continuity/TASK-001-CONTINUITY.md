@@ -548,3 +548,71 @@ la cobertura.
 La verificación de los cuatro trabajos disparados por el commit de mantenimiento
 se registra en §20.7, en el commit de documentación inmediatamente posterior. No
 se declara verificada antes de leer el resultado real.
+
+### 20.7 Ejecución CI verificada
+
+- Ejecución: `41251868418`, disparada por el push de `49e4f40` a `main`.
+- Resultado global: **success**. Cuatro trabajos en verde.
+
+| Trabajo | ID | Duración | Tests |
+|---|---|---|---|
+| `validate (ubuntu-24.04, 1.88)` | 124686894523 | 1m 1s | 56 passed, 0 failed, 1 ignored |
+| `validate (ubuntu-24.04, stable)` | 124686894759 | 44s | 56 passed, 0 failed, 1 ignored |
+| `validate (windows-latest, 1.88)` | 124686894735 | 1m 41s | 47 passed, 0 failed, 1 ignored |
+| `validate (windows-latest, stable)` | 124686894752 | 1m 29s | 47 passed, 0 failed, 1 ignored |
+
+- Anotaciones emitidas: **ninguna**. Desaparecen la deprecación de Node.js 20 de
+  `actions/checkout@v4` y el aviso de migración de `ubuntu-latest` a Ubuntu 26.
+- Los nombres de trabajo confirman el pin: `ubuntu-24.04` sustituye a
+  `ubuntu-latest`.
+- Cobertura WMI nativa: en ambos trabajos Windows se ejecutó
+  `provider::tests::native_provider_validates_cpu_battery_and_storage_invariants`
+  con resultado `ok`. La suite `adaptive-platform-windows` ejecutó 24 pruebas en
+  Windows frente a 13 en Linux.
+- Diferencia 56 (Linux) frente a 47 (Windows): en Linux el adaptador ejecuta 34
+  pruebas (20 unitarias + 14 de integración); en Windows ejecuta 14 unitarias y
+  la integración queda fuera por `cfg`. El proveedor Windows aporta 11 pruebas
+  que solo existen con WMI.
+
+### 20.8 Estado HD-AUD actualizado
+
+| Hallazgo | Estado | Evidencia y límite |
+|---|---|---|
+| HD-AUD-001 | PARTIAL | power-profiles-daemon validado por D-Bus real. TLP y auto-cpufreq siguen sin fuente read-only aprobada. |
+| HD-AUD-002 | PARTIAL (avanzado) | WMI real ejecutado en ambos trabajos Windows de CI mediante el test nativo. Falta la captura del equipo Windows 11 del propietario. |
+| HD-AUD-003 | PASS | regresiones Linux verdes en ambas toolchains de CI. |
+| HD-AUD-004 | PASS | almacenamiento parcial/desaparición verde. |
+| HD-AUD-005 | PASS | topología contradictoria/incompleta verde. |
+| HD-AUD-006 | PASS | procedencia Sysfs/Procfs verde. |
+| HD-AUD-007 | PASS | CI ejecutada en Linux y Windows con 1.88 y stable; la ejecución nativa Windows deja de estar bloqueada. |
+
+TASK-001 **no** se declara terminada ni aceptada. Siguen pendientes:
+
+1. la captura real del equipo Windows 11 del propietario y su JSON anonimizado;
+2. la resolución de HD-AUD-001, sin fuente read-only aprobada para TLP ni
+   auto-cpufreq;
+3. la segunda auditoría HD-AUD con evidencia de hardware Windows real.
+
+### 20.9 Estado Git final
+
+- Commit de mantenimiento: `49e4f40ffaaeea5c6c8080bb136fce978c58e4d8`
+  (`ci: bump checkout to v7 and pin ubuntu-24.04 runner`).
+- Push: `e751a9d..49e4f40 main -> main` hacia `origin/main`, fast-forward. Sin
+  `--force` y sin reescritura de historial.
+- Archivos del commit de mantenimiento: `.github/workflows/ci.yml` y
+  `docs/continuity/TASK-001-CONTINUITY.md`.
+- Commit de documentación: el que contiene esta sección (§20.7–§20.10).
+- Sin cambios en código Rust, `Cargo.toml`, `Cargo.lock`, ADR ni arquitectura.
+- Los `AGENTS.md` de la sesión de documentación anterior permanecen fuera de
+  estos commits y sin modificar.
+
+### 20.10 Próximos pasos
+
+1. Ejecutar `scripts/validate-windows-task001.ps1 -WriteAnonymizedCapture` en
+   Windows 11 nativo y revisar el JSON antes de incorporarlo.
+2. Resolver HD-AUD-001 solo con una fuente read-only aprobada para TLP y
+   auto-cpufreq; no detectar por procesos ni por archivos de unidad.
+3. Mantenimiento del workflow pendiente, fuera de esta tarea: fijar
+   `windows-latest`, añadir `permissions: contents: read`, `concurrency` y
+   `timeout-minutes`, y evaluar el pin por SHA de las acciones.
+4. No declarar TASK-001 aceptada hasta la validación del propietario.
