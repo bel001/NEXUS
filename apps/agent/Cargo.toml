@@ -1,0 +1,14 @@
+[package]
+name = "adaptive-agent"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[dependencies]
+adaptive-domain = { path = "../../crates/domain" }
+adaptive-hardware-discovery = { path = "../../crates/hardware-discovery" }
+adaptive-platform-windows = { path = "../../crates/platform-windows" }
+adaptive-platform-linux = { path = "../../crates/platform-linux" }
+
+[lints]
+workspace = true

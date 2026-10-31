@@ -1,0 +1,23 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/domain",
+    "crates/hardware-discovery",
+    "crates/platform-windows",
+    "crates/platform-linux",
+    "apps/agent",
+]
+default-members = [
+    "crates/domain",
+    "crates/hardware-discovery",
+    "crates/platform-windows",
+    "crates/platform-linux",
+    "apps/agent",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+
+[workspace.lints.rust]
+unused_must_use = "deny"

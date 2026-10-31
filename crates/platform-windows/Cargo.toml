@@ -1,0 +1,11 @@
+[package]
+name = "adaptive-platform-windows"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[dependencies]
+adaptive-domain = { path = "../domain" }
+
+[lints]
+workspace = true
