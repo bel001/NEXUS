@@ -2,10 +2,16 @@
 name = "adaptive-platform-windows"
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 publish = false
 
 [dependencies]
 adaptive-domain = { path = "../domain" }
+adaptive-hardware-discovery = { path = "../hardware-discovery" }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+serde.workspace = true
+wmi.workspace = true
 
 [lints]
 workspace = true

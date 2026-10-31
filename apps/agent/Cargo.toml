@@ -2,13 +2,19 @@
 name = "adaptive-agent"
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 publish = false
 
 [dependencies]
 adaptive-domain = { path = "../../crates/domain" }
 adaptive-hardware-discovery = { path = "../../crates/hardware-discovery" }
-adaptive-platform-windows = { path = "../../crates/platform-windows" }
+serde_json.workspace = true
+
+[target.'cfg(target_os = "linux")'.dependencies]
 adaptive-platform-linux = { path = "../../crates/platform-linux" }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+adaptive-platform-windows = { path = "../../crates/platform-windows" }
 
 [lints]
 workspace = true

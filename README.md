@@ -2,7 +2,7 @@
 
 > Nombre comercial pendiente. Repositorio de trabajo para una plataforma de optimización adaptativa de PC y laptops.
 
-**Estado:** pre-alpha · **Primera plataforma:** Windows + Linux · **Primera entrega funcional:** Hardware Discovery · **Modo previsto:** solo lectura.
+**Estado:** pre-alpha · **Primera plataforma:** Windows + Linux · **Primera entrega funcional:** Hardware Discovery · **Modo actual:** solo lectura.
 
 ## Propósito
 
@@ -22,9 +22,12 @@ No promete convertir hardware distinto en Apple Silicon ni superar universalment
 
 ## Estado del repositorio
 
-Este scaffold contiene documentación, un workspace Rust mínimo y el diseño
-técnico aprobado de Hardware Discovery. **TASK-001 todavía no está
-implementada y no existen optimizaciones que cambien el sistema.**
+El workspace contiene la primera implementación de Hardware Discovery:
+contrato versionado, adaptador Linux, adaptador Windows mediante WMI y salida
+JSON del agente. La captura se ha compilado, probado y ejecutado sobre Linux
+Mint 22.3. El adaptador Windows dispone de pruebas de normalización, pero su
+compilación y ejecución en Windows siguen pendientes de CI. No existen
+optimizaciones que cambien el sistema.
 
 ## Requisitos de desarrollo
 
@@ -37,25 +40,32 @@ implementada y no existen optimizaciones que cambien el sistema.**
 
 ```bash
 cargo fmt --all -- --check
-cargo check --workspace --all-targets
-cargo test --workspace
-cargo clippy --workspace --all-targets -- -D warnings
+cargo check --workspace --all-targets --locked
+cargo test --workspace --locked
+cargo clippy --workspace --all-targets --locked -- -D warnings
 ```
 
 En PowerShell se pueden ejecutar los mismos comandos. También están disponibles `scripts/validate.sh` y `scripts/validate.ps1`.
 
-## Primera tarea aprobada para implementación
+Para emitir un inventario JSON en la plataforma nativa:
+
+```bash
+cargo run --locked -p adaptive-agent
+```
+
+## Primera tarea en revisión
 
 Leer `docs/architecture/hardware-discovery.md`, los ADR-0005 a ADR-0007 y
 `docs/tasks/TASK-001-hardware-discovery.md`.
 
-El diseño y el alcance han sido aprobados. La implementación y validación
-siguen pendientes y deben respetar el orden de siete etapas documentado.
+El diseño y el alcance están aprobados. La implementación local está lista
+para revisión; faltan la matriz CI, la comprobación efectiva con Rust 1.88 y
+la validación sobre hardware Windows real.
 
 ## Estructura
 
 ```text
-apps/agent/                 Agente local (scaffold)
+apps/agent/                 Agente local y salida JSON
 crates/domain/              Tipos y contratos compartidos
 crates/hardware-discovery/  Orquestación de descubrimiento
 crates/platform-windows/    Adaptador Windows
@@ -73,6 +83,10 @@ scripts/                    Validación local
 - No limpiar cachés/RAM agresivamente.
 - No modificar voltajes, frecuencias, BIOS/UEFI o ventiladores en el MVP.
 - Toda acción futura debe tener precondiciones, consentimiento cuando corresponda, verificación y rollback.
+
+Hardware Discovery solo lee interfaces locales documentadas. No ejecuta
+comandos auxiliares, no solicita privilegios elevados, no usa red y no
+recopila números de serie, UUID, MAC, usuarios o credenciales.
 
 ## Licencia
 

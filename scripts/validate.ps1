@@ -1,9 +1,19 @@
+param(
+    [ValidateSet("", "1.88.0", "stable")]
+    [string]$Toolchain = ""
+)
+
 $ErrorActionPreference = "Stop"
-cargo fmt --all -- --check
+$CargoPrefix = @()
+if ($Toolchain) {
+    $CargoPrefix = @("+$Toolchain")
+}
+
+& cargo @CargoPrefix fmt --all -- --check
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-cargo check --workspace --all-targets
+& cargo @CargoPrefix check --workspace --all-targets --locked
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-cargo test --workspace
+& cargo @CargoPrefix test --workspace --locked
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-cargo clippy --workspace --all-targets -- -D warnings
+& cargo @CargoPrefix clippy --workspace --all-targets --locked -- -D warnings
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

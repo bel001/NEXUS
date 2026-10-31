@@ -47,7 +47,7 @@ Implementaciones específicas de Windows y Linux. Devuelven capacidades y datos 
 Incluye:
 - Workspace Rust.
 - Contratos iniciales.
-- Agente de consola scaffold.
+- Agente de consola que emite el inventario Hardware Discovery en JSON.
 - Descubrimiento de hardware read-only como primera tarea.
 - Windows y Linux.
 

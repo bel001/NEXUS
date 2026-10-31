@@ -1,4 +1,14 @@
-//! Adaptador específico de Windows.
-//!
-//! Mantener aquí las llamadas Win32/WMI/Power API. El dominio común no debe
-//! depender de tipos específicos de Windows. Estado: scaffold.
+#![forbid(unsafe_code)]
+
+//! Adaptador Windows read-only. La lógica pura se compila en todas las
+//! plataformas; WMI solo se incorpora bajo `cfg(target_os = "windows")`.
+
+pub mod normalization;
+#[cfg(any(target_os = "windows", test))]
+mod queries;
+
+#[cfg(target_os = "windows")]
+mod provider;
+
+#[cfg(target_os = "windows")]
+pub use provider::WindowsHardwareProvider;

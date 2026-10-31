@@ -3,15 +3,18 @@
 ## 1. Estado y alcance
 
 - Diseño: aprobado por el propietario para implementación.
-- Implementación: no iniciada.
-- Baseline: `cb8df06`.
+- Implementación: correcciones HD-AUD aplicadas; validación nativa Windows pendiente.
+- Baseline documental: `252d443`.
 - Plataformas: Windows 11 y Linux x86_64.
 - Nivel de acción: L0, lectura local.
 - MSRV provisional: Rust 1.88.
 
 Este documento consolida el diseño V4 y las aclaraciones V4.1 y V4.2. Es la
-referencia técnica de `TASK-001`; no acredita funcionalidad implementada ni
-validación en hardware real.
+referencia técnica de `TASK-001`. La implementación se validó localmente en
+Linux con stable y Rust 1.88. La detección D-Bus de power-profiles-daemon
+funciona con evidencia positiva y negativa. El código Windows compila para
+MSVC con ambas toolchains, pero su ejecución nativa, CI y validación física
+continúan pendientes.
 
 El objetivo es producir un inventario normalizado y versionado. Una fuente
 ausente o un componente que falle no debe impedir devolver el resto. Quedan
@@ -204,6 +207,21 @@ Conforme al ADR-0004, las capacidades Linux incluyen la detección read-only de
 gestores energéticos activos conocidos. TASK-001 no cambia perfiles, no compite
 por controles y no convierte esta observación en una acción de energía.
 
+La comprobación histórica basada en archivos de unidad bajo
+`/run/systemd/system` se retiró porque no demuestra que un servicio esté
+activo. power-profiles-daemon se detecta mediante el bus de sistema y el nombre
+`org.freedesktop.UPower.PowerProfiles`. La captura comprueba primero si el
+nombre tiene propietario y, cuando lo tiene, lee con timeout de dos segundos
+las propiedades `Profiles`, `Version` y `ActiveProfile`. Una respuesta válida
+produce evidencia positiva; que el bus confirme que el nombre no tiene
+propietario permite informar `false`. Fallos de conexión, permisos, timeout o
+tipos inválidos nunca se convierten en `false`.
+
+La integración no escribe `ActiveProfile` ni invoca métodos de la interfaz.
+TLP y auto-cpufreq permanecen `unavailable`: todavía no existe una fuente
+nativa read-only aprobada que demuestre su estado y no se ejecutan procesos
+externos para inferirlo.
+
 ### Block moderno
 
 Si `/sys/subsystem` existe, `/sys/subsystem/block/devices` es la única vista.
@@ -280,6 +298,10 @@ Para almacenamiento:
 `medium_technology`. Si contradice `MediaType`, se conservan ambas fuentes y
 se genera incidencia sin forzar reconciliación.
 
+`MSFT_PhysicalDisk.MediaType` conserva `3 = HDD`, `4 = SSD` y `5 = SCM`. Un
+código distinto queda `Unknown` con incidencia; una propiedad ausente queda
+`unavailable`.
+
 La tabla `BusType` es la específica de `MSFT_PhysicalDisk`. No se traslada la
 tabla de `STORAGE_BUS_TYPE`: los valores 18–20 no se reinterpretan como SCM,
 UFS o NVMe-oF sin evidencia de la interfaz. Los códigos no reconocidos quedan
@@ -302,18 +324,31 @@ Hardware Discovery es estrictamente read-only:
 
 MSRV provisional: Rust 1.88.
 
-| Dependencia | Uso | Configuración acordada |
-|---|---|---|
-| `serde` | Modelos e intercambio tipado | `derive` |
-| `serde_json` | JSON en ejecución | Dependencia normal de `adaptive-agent` |
-| `time` | UTC y RFC 3339 | `0.3.55`, `serde-well-known`, sin `local-offset` |
-| `rustix` | `uname(2)` seguro | Solo Linux, feature mínima de sistema |
-| `wmi` | Consultas WMI | `0.18.4`, `default-features = false`, sin `chrono` ni `time` |
-| `tempfile` | Fixtures temporales de Linux | `dev-dependency` exclusiva de `adaptive-platform-linux` |
+| Dependencia | Versión resuelta | Uso y superficie | Licencia declarada |
+|---|---:|---|---|
+| `serde` | 1.0.229 | Modelos tipados; solo feature `derive` | MIT OR Apache-2.0 |
+| `serde_json` | 1.0.154 | JSON en ejecución; dependencia normal exclusiva del agente | MIT OR Apache-2.0 |
+| `time` | 0.3.55 | UTC/RFC 3339; `serde-well-known`, sin `local-offset` | MIT OR Apache-2.0 |
+| `rustix` | 1.1.6 | `uname(2)` seguro; solo Linux y feature `system` | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| `zbus` | 5.19.0 | D-Bus de sistema read-only; solo Linux, `default-features = false`, features `async-io` y `blocking-api` | MIT |
+| `wmi` | 0.18.4 | WMI local; solo Windows, sin features por defecto, `chrono` ni `time` | MIT OR Apache-2.0 |
+| `tempfile` | 3.27.0 | Fixtures temporales; `dev-dependency` exclusiva de Linux | MIT OR Apache-2.0 |
 
-Antes de cambiar manifiestos se comprobarán licencia, mantenimiento,
-dependencias transitivas, tamaño y compatibilidad efectiva con Rust 1.88. No
-se requiere runtime asíncrono ni una dependencia para ejecutar comandos.
+Los manifiestos usan exclusivamente estas dependencias y `Cargo.lock` fija la
+resolución. No se incorpora Tokio ni una dependencia para ejecutar comandos.
+`zbus` usa su backend `async-io` internamente y expone la API bloqueante al
+proveedor síncrono; esto añade executor, tareas y dependencias transitivas,
+pero queda confinado al target Linux. La compatibilidad del lockfile se
+comprobó localmente con Rust 1.88 y stable. La revisión de
+mantenimiento se apoya en versiones publicadas en el registro y queda sujeta a
+revisión periódica; no se usan dependencias Git ni se amplían features sin una
+nueva evaluación de superficie de ataque.
+
+`zbus` declara MSRV 1.87, por debajo del MSRV 1.88 del proyecto. Se fijó la
+versión exacta y se añadió únicamente a la sección
+`target.'cfg(target_os = "linux")'.dependencies` de
+`adaptive-platform-linux`. `cargo tree` confirma que Windows incorpora `wmi`
+pero no `zbus`, y Linux incorpora `zbus` pero no `wmi`.
 
 `tempfile` se utiliza únicamente para pruebas y fixtures temporales del
 adaptador Linux. Nunca es una dependencia normal de producción y no se
@@ -330,23 +365,31 @@ incorpora a `adaptive-domain`, `adaptive-hardware-discovery`,
 6. Serialización JSON versionada.
 7. Pruebas, fixtures y CI.
 
-Cada etapa debe mantener el workspace compilable y añadir sus pruebas.
+Las siete etapas están implementadas. Cada una mantiene separados dominio,
+orquestación, adquisición por plataforma e integración.
 
 ## 14. Pruebas y CI
 
 Se requieren pruebas unitarias, proveedores falsos, serialización, fixtures y
 pruebas reales condicionadas por plataforma.
 
-Linux cubre modo moderno/legacy, vistas duplicadas y complementarias,
-particiones, enlaces rotos, bucles, destinos externos, desaparición durante la
-captura, `removable` ausente/unknown/fixed/removable, PCI sin soporte y USB sin
-herencia desde PCI.
+Las pruebas Linux ejecutadas localmente cubren modo moderno/legacy, vistas
+duplicadas y complementarias, recuperación condicionada mediante `device`,
+particiones, enlaces rotos, bucles, destinos externos, desaparición al construir
+un dispositivo, loop, errores de permisos y E/S, topología contradictoria,
+procedencia Procfs/Sysfs, batería vacía/completa/incompleta y `removable`
+ausente/unknown/fixed/removable.
 
-Windows cubre allowlist de consultas, confinamiento al hilo, primaria/fallback
-sin mezcla, CPU múltiples/duplicadas, códigos desconocidos y contradicción
-entre rotación y tecnología.
+En Linux se ejecutan también las pruebas puras de normalización Windows:
+allowlist de consultas, arquitectura ausente/desconocida, códigos de batería,
+MediaType, BusType, SpindleSpeed, SCM, contradicción entre rotación y tecnología
+y política primaria/fallback. El proveedor Windows añade pruebas condicionadas
+para fuente primaria, consulta vacía, fallo/tipo inesperado, fallback, doble
+fallo, propiedades ausentes y captura WMI nativa. Estas pruebas compilan para
+MSVC, pero no se consideran ejecutadas hasta disponer de Windows nativo.
 
-CI ejecutará Linux y Windows con Rust 1.88 y stable, utilizando `Cargo.lock`:
+CI está configurada para ejecutar Linux y Windows con Rust 1.88 y stable,
+utilizando `Cargo.lock`:
 
 ```text
 cargo fmt --all -- --check
@@ -355,8 +398,22 @@ cargo test --workspace --locked
 cargo clippy --workspace --all-targets --locked -- -D warnings
 ```
 
-Compilar en Linux no valida Windows. La aceptación requiere ejemplos JSON
-reales anonimizados por plataforma y coste documentado de una captura.
+El workflow conserva `dtolnay/rust-toolchain@master`: es una referencia mutable,
+pero la documentación oficial de la acción indica ese revisionado cuando la
+toolchain concreta se proporciona mediante el input `toolchain`. Fijarla exige
+un SHA completo perteneciente al historial de `master`; no se introduce un SHA
+sin validarlo y definir previamente el proceso de actualización.
+
+Localmente, los cuatro comandos pasan con Rust 1.99.1 y Rust 1.88.0 en Linux.
+Cada suite ejecuta 56 pruebas y deja una prueba de bus real ignorada por
+defecto; esa prueba se ejecutó explícitamente y pasó. La captura real Linux
+produce JSON válido y confirmó power-profiles-daemon activo mediante D-Bus.
+Los checks y Clippy cruzados para `x86_64-pc-windows-msvc` pasan con ambas
+toolchains, incluido el código y tests bajo `cfg(windows)`. Compilar en Linux no
+valida Windows: siguen
+pendientes la ejecución de CI, el ejemplo Windows real anonimizado y la prueba
+sobre hardware Windows. El ejemplo Linux anonimizado se conserva en
+`docs/examples/hardware-inventory-linux.anonymized.json`.
 
 ## 15. Limitaciones
 
@@ -367,5 +424,10 @@ reales anonimizados por plataforma y coste documentado de una captura.
 - La removibilidad puede no estar soportada aunque se conozca el transporte.
 - WMI puede devolver valores localizados, incompletos o contradictorios.
 - No se declara compatibilidad universal ni con kernels no probados.
-- Rust 1.88 es provisional hasta validar las versiones fijadas en Cargo.lock.
-- Diseño aprobado no equivale a implementación o validación funcional.
+- Rust 1.88 está validado localmente en Linux y por compilación cruzada MSVC;
+  todavía falta la ejecución nativa Windows/CI con esa toolchain.
+- La implementación WMI compila para Windows MSVC, pero no se considera probada
+  en Windows hasta que pase la matriz CI; tampoco existe validación sobre
+  hardware Windows real.
+- power-profiles-daemon se detecta con D-Bus read-only. TLP y auto-cpufreq
+  permanecen sin detector nativo aprobado.

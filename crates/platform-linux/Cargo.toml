@@ -2,10 +2,19 @@
 name = "adaptive-platform-linux"
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 publish = false
 
 [dependencies]
 adaptive-domain = { path = "../domain" }
+adaptive-hardware-discovery = { path = "../hardware-discovery" }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+rustix.workspace = true
+zbus = { version = "=5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
+
+[dev-dependencies]
+tempfile.workspace = true
 
 [lints]
 workspace = true

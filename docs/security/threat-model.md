@@ -60,6 +60,17 @@ TASK-001 pertenece a L0 y es estrictamente de lectura:
   números de serie ni otros identificadores innecesarios;
 - los errores se estructuran y sanitizan antes de incluirse en el inventario.
 
+La detección anterior de gestores energéticos mediante archivos de unidad se
+retiró porque podía producir falsos negativos. power-profiles-daemon se consulta
+por D-Bus local con timeout: se comprueba el propietario del nombre y solo se
+leen `Profiles`, `Version` y `ActiveProfile`. La interfaz interna no ofrece
+operaciones de escritura. Quedan prohibidos `HoldProfile`, `ReleaseProfile`,
+`SetActionEnabled`, escrituras de `ActiveProfile` y cualquier otra operación
+modificadora. Los errores del bus no se convierten en `false`; TLP y
+auto-cpufreq continúan `unavailable` sin una fuente aprobada.
+
 La especificación aprobada está en
-`docs/architecture/hardware-discovery.md`. Estos controles todavía deben
-implementarse y validarse.
+`docs/architecture/hardware-discovery.md`. Los controles están implementados y
+se revisaron mediante pruebas y una captura real Linux. La captura D-Bus real
+detectó el servicio activo sin serializar valores de perfil. La compilación
+cruzada MSVC pasa, pero CI y la ejecución nativa Windows siguen pendientes.

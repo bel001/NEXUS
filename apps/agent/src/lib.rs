@@ -1,0 +1,77 @@
+#![forbid(unsafe_code)]
+
+//! Integración del proveedor nativo y serialización del inventario.
+
+use adaptive_domain::HardwareInventory;
+use adaptive_hardware_discovery::{HardwareProvider, capture};
+
+pub fn inventory_from(provider: &impl HardwareProvider) -> HardwareInventory {
+    capture(provider)
+}
+
+#[cfg(target_os = "linux")]
+pub fn native_inventory() -> HardwareInventory {
+    inventory_from(&adaptive_platform_linux::LinuxHardwareProvider::new())
+}
+
+#[cfg(target_os = "windows")]
+pub fn native_inventory() -> HardwareInventory {
+    inventory_from(&adaptive_platform_windows::WindowsHardwareProvider::new())
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "windows")))]
+pub fn native_inventory() -> HardwareInventory {
+    HardwareInventory::empty()
+}
+
+pub fn to_json(inventory: &HardwareInventory) -> Result<String, serde_json::Error> {
+    serde_json::to_string_pretty(inventory)
+}
+
+pub fn run() -> Result<String, serde_json::Error> {
+    to_json(&native_inventory())
+}
+
+#[cfg(test)]
+mod tests {
+    use adaptive_domain::{
+        DataSource, HardwareComponent, HardwareError, HardwareErrorKind, HardwareInventory,
+    };
+
+    use super::*;
+
+    struct EmptyProvider;
+
+    impl HardwareProvider for EmptyProvider {
+        fn collect(&self) -> Result<HardwareInventory, HardwareError> {
+            Ok(HardwareInventory::empty())
+        }
+    }
+
+    #[test]
+    fn output_is_valid_versioned_json_without_redundant_timestamps() {
+        let inventory = inventory_from(&EmptyProvider);
+        let json = to_json(&inventory).expect("serializable inventory");
+        let value: serde_json::Value = serde_json::from_str(&json).expect("valid JSON");
+        assert_eq!(value["schema_version"], 1);
+        assert!(value.get("captured_at").is_some());
+        assert!(value["cpu"].get("timestamp").is_none());
+        assert_eq!(inventory.cpu.source(), DataSource::Orchestrator);
+    }
+
+    #[test]
+    fn simulated_windows_inventory_preserves_structured_incidents_in_json() {
+        let mut inventory = HardwareInventory::empty();
+        inventory.issues.push(HardwareError::new(
+            HardwareComponent::Storage,
+            HardwareErrorKind::InvalidData,
+            DataSource::WindowsWmiStorage,
+            "unrecognized storage code",
+        ));
+        let json = to_json(&inventory).expect("serializable inventory");
+        let value: serde_json::Value = serde_json::from_str(&json).expect("valid JSON");
+        assert_eq!(value["issues"][0]["source"], "windows_wmi_storage");
+        assert_eq!(value["issues"][0]["kind"], "invalid_data");
+        assert!(value["cpu"].get("timestamp").is_none());
+    }
+}

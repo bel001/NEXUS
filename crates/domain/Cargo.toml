@@ -2,7 +2,12 @@
 name = "adaptive-domain"
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 publish = false
+
+[dependencies]
+serde.workspace = true
+time.workspace = true
 
 [lints]
 workspace = true

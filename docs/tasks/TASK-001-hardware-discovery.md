@@ -1,6 +1,6 @@
 # TASK-001 — Hardware Discovery read-only
 
-- Estado: Diseño técnico aprobado; implementación no iniciada
+- Estado: Correcciones implementadas; validación nativa Windows, CI y aceptación pendientes
 - Prioridad: P0
 - Plataforma: Windows 11 + Linux x86_64
 - Tipo: solo lectura
@@ -8,8 +8,17 @@
   V4.1 y V4.2 para preparar su implementación.
 
 La especificación vinculante está en
-`docs/architecture/hardware-discovery.md`. Aprobar el diseño no implica que la
-funcionalidad esté implementada o validada.
+`docs/architecture/hardware-discovery.md`. La implementación actual no se
+considera terminada hasta que pase CI Windows/Linux, MSRV 1.88 y la revisión
+del propietario.
+
+La corrección posterior a la primera auditoría resolvió los defectos locales de
+errores Linux, topología/procedencia CPU, incidencias de almacenamiento y
+normalización Windows. La antigua detección de gestores energéticos por
+existencia de archivos se retiró. power-profiles-daemon se detecta ahora
+mediante lectura D-Bus nativa con timeout y evidencia explícita; TLP y
+auto-cpufreq siguen `unavailable` por falta de una fuente read-only aprobada. No se
+declara TASK-001 aceptada por estas correcciones locales.
 
 ## Objetivo
 
@@ -79,16 +88,27 @@ Un valor ausente nunca se convierte en `0`, cadena vacía engañosa o valor inve
 
 ## Criterios de aceptación
 
-- [ ] El mismo contrato de salida funciona en Windows y Linux.
-- [ ] La detección no modifica el sistema.
-- [ ] No requiere admin/root en el flujo normal.
-- [ ] Devuelve disponibilidad por campo.
-- [ ] Maneja fallos parciales.
-- [ ] No hay llamadas de red.
+- [ ] El mismo contrato de salida funciona en Windows y Linux (compilación MSVC verificada; ejecución nativa pendiente).
+- [x] La detección no modifica el sistema.
+- [x] No requiere admin/root en el flujo normal validado en Linux.
+- [x] Devuelve disponibilidad por campo.
+- [x] Maneja fallos parciales.
+- [x] No hay llamadas de red.
 - [ ] Tests automatizados pasan en CI Windows y Ubuntu.
-- [ ] README documenta limitaciones conocidas.
+- [x] README documenta limitaciones conocidas.
 - [ ] Se adjunta ejemplo JSON real anonimizado de cada plataforma.
-- [ ] Se informa el consumo del proceso durante una sesión de descubrimiento.
+- [x] Se informa el consumo del proceso durante una sesión de descubrimiento.
+- [ ] Se detectan gestores energéticos activos mediante evidencia nativa aprobada (power-profiles-daemon cubierto; TLP/auto-cpufreq pendientes).
+
+Validación local del 30 de octubre de 2026: captura real en Linux Mint 22.3,
+salida JSON analizada correctamente, 2.5 MiB de RSS máximo aproximado y 0.01 s
+de tiempo de pared en una ejecución caliente. Es una medición puntual,
+no un benchmark. La captura Linux anonimizada está en
+`docs/examples/hardware-inventory-linux.anonymized.json`. No existe todavía
+La validación local posterior ejecutó 56 pruebas con Rust 1.88 y stable,
+captura D-Bus real y compilación/Clippy cruzados para Windows MSVC. No existe
+ejemplo real Windows ni validación física Windows; por ello los criterios
+multiplataforma permanecen abiertos.
 
 ## Entrega esperada
 

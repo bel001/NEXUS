@@ -1,0 +1,887 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-31T04:44:37.636770462Z",
+  "operating_system": {
+    "value": {
+      "name": {
+        "value": "Linux",
+        "status": "available",
+        "source": "linux_uname"
+      },
+      "version": {
+        "value": "22.3",
+        "status": "available",
+        "source": "linux_os_release"
+      },
+      "distribution": {
+        "value": "Linux Mint 22.3",
+        "status": "available",
+        "source": "linux_os_release"
+      },
+      "binary_architecture": {
+        "value": "x86_64",
+        "status": "available",
+        "source": "runtime"
+      },
+      "kernel_architecture": {
+        "value": "x86_64",
+        "status": "available",
+        "source": "linux_uname"
+      },
+      "os_bitness": {
+        "value": "bits64",
+        "status": "available",
+        "source": "linux_uname"
+      }
+    },
+    "status": "available",
+    "source": "linux_uname"
+  },
+  "system_manufacturer": {
+    "value": {
+      "manufacturer": {
+        "value": "[anonymized]",
+        "status": "available",
+        "source": "linux_dmi"
+      },
+      "model": {
+        "value": "[anonymized]",
+        "status": "available",
+        "source": "linux_dmi"
+      }
+    },
+    "status": "available",
+    "source": "linux_dmi"
+  },
+  "cpu": {
+    "value": {
+      "manufacturer": {
+        "value": "GenuineIntel",
+        "status": "available",
+        "source": "linux_procfs"
+      },
+      "model": {
+        "value": "[anonymized]",
+        "status": "available",
+        "source": "linux_procfs"
+      },
+      "processor_architecture": {
+        "value": null,
+        "status": "unavailable",
+        "source": "linux_procfs",
+        "detail": "processor architecture is not proven by the selected sources"
+      },
+      "package_count": {
+        "value": 1,
+        "status": "available",
+        "source": "linux_sysfs",
+        "unit": "count"
+      },
+      "logical_processor_count": {
+        "value": 12,
+        "status": "available",
+        "source": "linux_sysfs",
+        "unit": "count"
+      },
+      "online_physical_core_count": {
+        "value": 10,
+        "status": "available",
+        "source": "linux_sysfs",
+        "unit": "count"
+      }
+    },
+    "status": "available",
+    "source": "linux_sysfs"
+  },
+  "memory": {
+    "value": {
+      "total_visible_bytes": {
+        "value": 16434319360,
+        "status": "available",
+        "source": "linux_procfs",
+        "unit": "bytes"
+      }
+    },
+    "status": "available",
+    "source": "linux_procfs"
+  },
+  "gpus": {
+    "value": [
+      {
+        "manufacturer": {
+          "value": "Intel",
+          "status": "available",
+          "source": "linux_sysfs"
+        },
+        "model": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs",
+          "detail": "GPU commercial model is unavailable without a trusted mapping"
+        }
+      }
+    ],
+    "status": "available",
+    "source": "linux_sysfs"
+  },
+  "storage": {
+    "value": [
+      {
+        "presentation": {
+          "value": "disk-1",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "nvme",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "physical",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 1000204886016,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "disk-2",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": "magnetic",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "transport": {
+          "value": "usb",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "physical",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": "removable",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "rotation": {
+          "value": "rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 1000204885504,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-1",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-2",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-3",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-4",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-5",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-6",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-7",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-8",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "loop",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 0,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 512,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      },
+      {
+        "presentation": {
+          "value": "virtual-9",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "medium_technology": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "non-rotational does not prove a storage technology"
+        },
+        "transport": {
+          "value": "unknown",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "nature": {
+          "value": "ram",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "removability": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "physical removability is not supported"
+        },
+        "rotation": {
+          "value": "non_rotational",
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "supports_removable_media": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy"
+        },
+        "capacity_bytes": {
+          "value": 8217161728,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes"
+        },
+        "reported_sector_size_bytes": {
+          "value": null,
+          "status": "unavailable",
+          "source": "linux_sysfs_block_legacy",
+          "detail": "no approved reported-sector source"
+        },
+        "logical_sector_size_bytes": {
+          "value": 4096,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        },
+        "physical_sector_size_bytes": {
+          "value": 4096,
+          "status": "available",
+          "source": "linux_sysfs_block_legacy",
+          "unit": "bytes_per_sector"
+        }
+      }
+    ],
+    "status": "available",
+    "source": "linux_sysfs_block_legacy"
+  },
+  "batteries": {
+    "value": [
+      {
+        "percentage": {
+          "value": 60,
+          "status": "available",
+          "source": "linux_sysfs",
+          "unit": "percent"
+        },
+        "direction": {
+          "value": "discharging",
+          "status": "available",
+          "source": "linux_sysfs"
+        },
+        "level": {
+          "value": "high",
+          "status": "available",
+          "source": "linux_sysfs"
+        }
+      }
+    ],
+    "status": "available",
+    "source": "linux_sysfs"
+  },
+  "capabilities": {
+    "value": [
+      {
+        "kind": "hardware_discovery",
+        "available": {
+          "value": true,
+          "status": "available",
+          "source": "linux_sysfs"
+        }
+      },
+      {
+        "kind": "power_profiles_daemon",
+        "available": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs"
+        }
+      },
+      {
+        "kind": "tlp",
+        "available": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs"
+        }
+      },
+      {
+        "kind": "auto_cpu_freq",
+        "available": {
+          "value": false,
+          "status": "available",
+          "source": "linux_sysfs"
+        }
+      }
+    ],
+    "status": "available",
+    "source": "linux_sysfs"
+  },
+  "issues": []
+}

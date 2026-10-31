@@ -1,6 +1,12 @@
 #![forbid(unsafe_code)]
 
-//! Tipos y contratos compartidos del producto.
+//! Contratos compartidos de Hardware Discovery.
 //!
-//! La primera entrega deja el dominio deliberadamente pequeño. Los contratos
-//! de Hardware Discovery se aprobarán en TASK-001 antes de añadir modelos.
+//! Este crate no accede al sistema operativo. Define el inventario versionado,
+//! observaciones tipadas y errores sanitizados que comparten los adaptadores.
+
+mod inventory;
+mod observation;
+
+pub use inventory::*;
+pub use observation::*;
