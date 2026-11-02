@@ -119,14 +119,14 @@ antes de iniciar codigo.
 Fase A: IMPLEMENTADA Y ACEPTADA el 2026-11-01.
 Commit de implementacion: a66622c.
 CI: 41385211033, cuatro trabajos satisfactorios.
-Fase B1: IMPLEMENTADA Y ACEPTADA el 2026-11-01 (c755ddd y bf6b21f; CI 41388343658). Fase B2: NO AUTORIZADA.
+Fase B1: IMPLEMENTADA Y ACEPTADA el 2026-11-01 (c755ddd y bf6b21f; CI 41388343658). Fase B2: IMPLEMENTADA Y ACEPTADA el 2026-11-02 (7070b75; CI 41390907384).
 TASK-002 completa: ABIERTA.
 
-La autorizacion limitada y la aceptacion de Fase A
+Las autorizaciones y aceptaciones de A, B1 y B2
 constan en TASK-002-design-review.md.
 
-Este documento no autoriza trabajos de Fase B,
-nuevas dependencias ni cambios del sistema.
+Este documento no autoriza nuevas fases, dependencias,
+servicios residentes ni cambios del sistema.
 
 Fecha de creacion: 2026-11-01
 Baseline: 66a37a7

@@ -1,6 +1,6 @@
 # TASK-002 - Revision de contrato y arquitectura
 
-Estado: Fases A y B1 aceptadas; TASK-002 ABIERTA.
+Estado: Fases A, B1 y B2 aceptadas; TASK-002 ABIERTA.
 Baseline: 66a37a7.
 Documento principal: TASK-002-telemetry-read-only.md.
 
@@ -443,3 +443,26 @@ Este registro actualiza el estado B2 anterior, pero conserva la aceptacion B1.
 Esta autorizacion NO aprueba ni publica B2 y NO permite commit o push.
 La aceptacion de B2 se evaluara despues de las pruebas y de CI.
 TASK-002 completa: ABIERTA.
+
+## 19. Aceptacion formal de Fase B2
+
+Fecha: 2026-11-02.
+Decision expresa del propietario: FASE B2 ACEPTADA.
+
+Evidencia:
+- Implementacion: commit 7070b75.
+- CI: ejecucion 41390907384, cuatro trabajos satisfactorios.
+- Windows: medicion nativa de CPU validada localmente.
+- Linux: lectura nativa de /proc/stat probada en Ubuntu CI.
+- Rust 1.88 y stable: check, test, Clippy y formato aprobados.
+- Medicion bajo demanda mediante dos muestras.
+- Sin nuevas dependencias, unsafe, servicios residentes ni red.
+- Sin modificar el contrato HardwareInventory V1.
+
+Limitaciones:
+- La prueba Linux acepta un rechazo seguro ante contadores invalidos.
+- No se certifica disponibilidad universal de CPU en Linux.
+- No se certifica cobertura global Windows con multiples grupos CPU.
+- No se certifica el presupuesto de consumo energetico o latencia WMI.
+- No se autorizan nuevas fases, bateria ni cambios del sistema.
+- TASK-002 sigue ABIERTA.
