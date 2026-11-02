@@ -1,6 +1,6 @@
 # TASK-002 — Telemetria local read-only
 
-- Estado: Fases A, B1, B2, B3 y B4 ACEPTADAS; Fase C en verificacion; TASK-002 ABIERTA
+- Estado: TASK-002 CIERRE ACOTADO ACEPTADO (2026-11-02); CI del commit de cierre sujeta a verificacion pospush.
 - Prioridad propuesta: P0
 - Plataforma objetivo: Windows 11 y Linux x86_64
 - Dependencia: TASK-001 aceptada
@@ -821,3 +821,31 @@ Estado: REVISION DE CIERRE REALIZADA; TASK-002 ABIERTA. Esta seccion prevalece c
 - Esta fase C no modifica Rust, Cargo.lock, dependencias, CI, HardwareInventory V1, politicas ni configuracion del equipo.
 
 Decision C: documentar la evidencia y conservar TASK-002 ABIERTA. La CI del commit C se comprueba despues del push; el resultado no implica aceptacion final automatica.
+
+## 26. Decision final - cierre acotado de TASK-002 (2026-11-02)
+
+Estado: CIERRE ACOTADO ACEPTADO EXPRESAMENTE POR EL PROPIETARIO; verificacion CI del commit documental de cierre obligatoria despues del push. Esta decision posterior actualiza el estado de la TASK sin alterar las propuestas ni los registros historicos anteriores.
+
+Decision literal: `ACEPTO EL CIERRE ACOTADO DE TASK-002 Y AUTORIZO DOCUMENTACIÃ“N, COMMIT Y PUSH.` El propietario acepta expresamente que no estan certificados los presupuestos universales de rendimiento, el consumo energetico, la deteccion fisica de suspension/reanudacion ni Linux con bateria fisica.
+
+### Entrega aceptada
+
+- Telemetria local bajo demanda, solo lectura, con `TelemetrySnapshot` separado de `HardwareInventory` version 1.
+- Memoria visible y disponible, uso global de CPU cuando la evidencia permite afirmarlo, fuente de alimentacion y porcentaje de bateria cuando hay datos validos; errores, ausencia y ambiguedad representados explicitamente.
+- Captura nativa Windows/Linux en los alcances aceptados A, B1, B2, B3; herramientas B4 para medir latencia del proceso colector, tiempo de CPU del proceso y memoria residente pico.
+- Sin servicio residente, historial persistente, telemetria de red, privilegios elevados, politicas, acciones correctivas, ni modificaciones de configuracion del equipo.
+
+### Evidencia y limites de certificacion
+
+- A, B1, B2, B3 y B4 aceptadas previamente. Fase C auditada y publicada en `5e1692b`; GitHub Actions `41501919510` (Windows/Ubuntu x Rust 1.88/stable: 4/4; smoke Linux B4: 2/2), comprobada en la revision de cierre.
+- Presupuestos universales de latencia, CPU y memoria: **NO CERTIFICADOS**. Las mediciones B4 del equipo Windows no fijan umbrales contractuales.
+- Consumo energetico real en vatios/julios: **NO MEDIDO NI CERTIFICADO**.
+- Deteccion fisica de suspension y reanudacion: **NO CERTIFICADA**; las pruebas de discontinuidades no demuestran cobertura universal del evento fisico.
+- Linux con bateria fisica: **NO CERTIFICADO** por la CI en runners Ubuntu.
+- Tampoco se garantiza disponibilidad de todas las fuentes de telemetria en todos los equipos, ni cobertura global Windows con multiples grupos CPU cuando la fuente no la demuestra.
+
+### Puerta de publicacion y continuidad
+
+La autorizacion conjunta cubre exclusivamente este cierre documental, un commit y su push tras preflight de Git/privacidad, verificacion de las rutas y CI base. Tras publicar, se debe comprobar CI del nuevo commit (4/4 y dos smoke Linux). Si falla o no termina, el registro de aceptacion queda publicado, pero la validacion del cierre sigue PENDIENTE y no se declarara PASS final.
+
+TASK-002 se considera **CERRADA CON ALCANCE ACOTADO solo cuando la CI del commit de cierre sea PASS**. Esta decision no autoriza automaticamente nuevas fases, dependencias, monitorizacion continua ni cambios del sistema.

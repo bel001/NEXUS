@@ -1,6 +1,6 @@
 # TASK-002 B4 — Metodologia de coste del colector (B4 aceptada)
 
-Estado: FASE B4 ACEPTADA FORMALMENTE (2026-11-02). TASK-002 ABIERTA; sin presupuestos de rendimiento ni energia certificados.
+Estado: FASE B4 ACEPTADA FORMALMENTE (2026-11-02). TASK-002 con cierre acotado aceptado; CI del commit de cierre sujeta a verificacion pospush; sin presupuestos de rendimiento ni energia certificados.
 
 ## Objetivo
 

@@ -1,6 +1,6 @@
 # TASK-002 - Revision de contrato y arquitectura
 
-Estado: Fases A, B1, B2, B3 y B4 aceptadas; Fase C de verificacion de cierre; TASK-002 ABIERTA.
+Estado: TASK-002 CIERRE ACOTADO ACEPTADO (2026-11-02); CI del commit de cierre sujeta a verificacion pospush.
 Baseline: 66a37a7.
 Documento principal: TASK-002-telemetry-read-only.md.
 
@@ -567,3 +567,19 @@ Base de evidencia: implementacion y aceptacion B4 publicadas, commit `8ff0e52`, 
 Resultado de auditoria: se conserva la politica solo lectura y el contrato HardwareInventory V1 sin cambios; sin nuevas dependencias, red del producto, privilegios ni acciones correctivas. La fase C es documental porque ya hay pruebas deterministas para los errores identificados; cualquier soporte adicional de deteccion real de suspension requerira especificacion y pruebas propias, fuera de este incremento.
 
 Decision: FASE C DOCUMENTAL AUTORIZADA PARA COMMIT Y PUSH, CON VALIDACION CONDICIONAL. TASK-002 ABIERTA. El cierre final, los presupuestos numericos y cualquier fase adicional requieren decisiones expresas nuevas.
+
+## 25. Aceptacion final de TASK-002 - cierre con alcance acotado
+
+Fecha: 2026-11-02. Aceptacion y autorizacion conjunta expresas del propietario: `ACEPTO EL CIERRE ACOTADO DE TASK-002 Y AUTORIZO DOCUMENTACIÃ“N, COMMIT Y PUSH.`
+
+Decision: se acepta la entrega local **L0 / solo lectura / bajo demanda** de TASK-002, con A/B1/B2/B3/B4 funcionalmente aceptadas y auditoria C publicada (`5e1692b`, CI `41501919510`: 4/4, smoke Linux 2/2). Se permite actualizar exclusivamente los documentos del cierre, crear un commit y publicarlo en `main`, sujeto a validacion de Git y privacidad. CI del commit documental de cierre debe comprobarse tras push.
+
+Exclusiones aceptadas expresamente como **NO CERTIFICADAS**:
+- Presupuestos universales de rendimiento: latencia, CPU y memoria del proceso.
+- Consumo energetico real en vatios o julios.
+- Deteccion fisica de suspension/reanudacion.
+- Soporte validado en Linux con bateria fisica.
+
+Se mantienen tambien las restricciones de disponibilidad de fuentes, alcance real de CPU y estados conservadores ante ambiguedad. No alterar `HardwareInventory` V1 ni los proveedores Rust; sin nuevas dependencias, privilegios, red del producto, monitor residente, almacenamiento persistente, motor de politicas o acciones.
+
+Los apartados antiguos que decian `TASK-002 ABIERTA` describen hitos anteriores a esta decision, no el estado actual. **Cierre acotado registrado**; su validacion final requiere CI 4/4 y smoke Linux 2/2 del commit documental de cierre. Ninguna etapa posterior queda autorizada por esta decision.
