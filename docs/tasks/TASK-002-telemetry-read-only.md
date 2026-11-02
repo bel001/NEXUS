@@ -122,7 +122,9 @@ CI: 41385211033, cuatro trabajos satisfactorios.
 Fase B1: IMPLEMENTADA Y ACEPTADA el 2026-11-01 (c755ddd y bf6b21f; CI 41388343658). Fase B2: IMPLEMENTADA Y ACEPTADA el 2026-11-02 (7070b75; CI 41390907384).
 TASK-002 completa: ABIERTA.
 
-Las autorizaciones y aceptaciones de A, B1 y B2
+Fase B3: IMPLEMENTADA Y ACEPTADA el 2026-11-02 (f473cd9; CI 41393237480).
+
+Las autorizaciones y aceptaciones de A, B1, B2 y B3
 constan en TASK-002-design-review.md.
 
 Este documento no autoriza nuevas fases, dependencias,

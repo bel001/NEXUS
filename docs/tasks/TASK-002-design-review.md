@@ -1,6 +1,6 @@
 # TASK-002 - Revision de contrato y arquitectura
 
-Estado: Fases A, B1 y B2 aceptadas; TASK-002 ABIERTA.
+Estado: Fases A, B1, B2 y B3 aceptadas; TASK-002 ABIERTA.
 Baseline: 66a37a7.
 Documento principal: TASK-002-telemetry-read-only.md.
 
@@ -489,3 +489,25 @@ Limitaciones:
 - Sin nuevas dependencias, nuevos servicios ni cambios de perfil energetico.
 - No se autoriza commit, push ni la aceptacion automatica de B3.
 - TASK-002 permanece ABIERTA; fases posteriores NO AUTORIZADAS.
+
+## 21. Aceptacion formal de Fase B3
+
+Fecha: 2026-11-02.
+Decision expresa del propietario: FASE B3 ACEPTADA.
+
+Evidencia:
+- Implementacion: commit f473cd9.
+- CI: ejecucion 41393237480, cuatro trabajos satisfactorios.
+- Windows: lectura real de alimentacion y bateria disponible.
+- Linux: proveedor sysfs probado en Ubuntu CI.
+- Rust 1.88 y stable: validaciones satisfactorias.
+- Sin modificar HardwareInventory V1.
+- Sin nuevas dependencias ni cambios del sistema.
+
+Limitaciones:
+- El runner Linux no acredita una bateria fisica.
+- Los estados ambiguos permanecen no disponibles.
+- No se certifican todas las configuraciones de bateria.
+- No se certifica consumo, latencia ni suspend/resume.
+- No se autoriza polling permanente ni otras fases.
+- TASK-002 permanece ABIERTA.
