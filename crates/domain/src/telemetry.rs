@@ -27,6 +27,7 @@ pub enum TelemetrySource {
     WindowsSystemTimes,
     WindowsMemoryStatus,
     WindowsWmiMemory,
+    WindowsWmiCpu,
     WindowsPowerStatus,
 }
 
@@ -284,6 +285,34 @@ impl CpuUsageReading {
         })
     }
 
+    pub fn error(source: TelemetrySource, scope: CpuScope, reason: TelemetryReason) -> Self {
+        Self {
+            usage_percent: TelemetryReading::error(source, reason),
+            sample_window_ms: None,
+            cpu_scope: scope,
+        }
+    }
+    pub fn permission_denied(source: TelemetrySource, scope: CpuScope) -> Self {
+        Self {
+            usage_percent: TelemetryReading::permission_denied(source),
+            sample_window_ms: None,
+            cpu_scope: scope,
+        }
+    }
+    pub fn available_now(
+        percentage: f64,
+        window_ms: u64,
+        scope: CpuScope,
+        source: TelemetrySource,
+    ) -> Result<Self, TelemetryValidationError> {
+        Self::available(
+            percentage,
+            window_ms,
+            scope,
+            source,
+            OffsetDateTime::now_utc(),
+        )
+    }
     pub fn unavailable(source: TelemetrySource, scope: CpuScope, reason: TelemetryReason) -> Self {
         Self {
             usage_percent: TelemetryReading::unavailable(source, reason),
@@ -446,6 +475,18 @@ pub fn linux_cpu_percent(
     percent_from_deltas(total, idle)
 }
 
+/// Windows WMI PERF_100NSEC_TIMER_INV: the raw counter is time spent idle.
+/// Its delta is compared with Timestamp_Sys100NS, without an FFI dependency.
+pub fn windows_wmi_cpu_percent(
+    previous_idle: u64,
+    previous_timestamp: u64,
+    current_idle: u64,
+    current_timestamp: u64,
+) -> Result<f64, CpuCalculationError> {
+    let idle = checked_delta(previous_idle, current_idle)?;
+    let total = checked_delta(previous_timestamp, current_timestamp)?;
+    percent_from_deltas(total, idle)
+}
 /// Windows KernelTime incluye IdleTime, por lo que no se suma dos veces.
 pub fn windows_cpu_percent(
     previous: WindowsCpuTimes,
@@ -520,6 +561,22 @@ mod tests {
         );
     }
 
+    #[test]
+    fn wmi_inverse_timer_checked_deltas() {
+        assert_eq!(windows_wmi_cpu_percent(10, 100, 90, 200), Ok(20.0));
+        assert_eq!(
+            windows_wmi_cpu_percent(10, 100, 10, 100),
+            Err(CpuCalculationError::ZeroDelta)
+        );
+        assert_eq!(
+            windows_wmi_cpu_percent(90, 200, 10, 300),
+            Err(CpuCalculationError::Regression)
+        );
+        assert_eq!(
+            windows_wmi_cpu_percent(10, 100, 120, 200),
+            Err(CpuCalculationError::Inconsistent)
+        );
+    }
     #[test]
     fn cpu_windows_checked_deltas() {
         let start = WindowsCpuTimes {

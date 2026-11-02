@@ -2,6 +2,7 @@
 
 //! Adaptador Linux read-only basado en `/proc`, sysfs, `os-release` y uname.
 
+pub mod cpu_telemetry;
 pub mod memory_telemetry;
 mod parsers;
 mod power_profiles;

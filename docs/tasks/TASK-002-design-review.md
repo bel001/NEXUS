@@ -420,3 +420,26 @@ Limites:
 - Sin polling residente, procesos auxiliares ni telemetria de red.
 - HardwareInventory V1 permanece sin cambios.
 - TASK-002 sigue ABIERTA.
+
+## 18. Autorizacion limitada de Fase B2 (CPU)
+
+Autorizacion explicita del propietario en la conversacion: 2026-11-01.
+Estado: AUTORIZADA PARA IMPLEMENTACION, NO ACEPTADA.
+
+Alcance: dos muestras globales de CPU bajo demanda separadas por 250 ms;
+Linux /proc/stat agregado; Windows WMI de contadores brutos _Total;
+calculos checked, fuente, marca de tiempo, estados y pruebas deterministas;
+prueba Linux en CI, validacion real Windows local; Rust 1.88 y stable.
+
+Restricciones: sin unsafe, FFI, procesos auxiliares, red ni elevacion;
+sin nuevas dependencias, sin polling continuo ni persistencia;
+sin bateria, politicas ni cambios al inventario TASK-001;
+sin alteracion de la funcion --telemetry-memory de B1.
+No se certifican limites de energia, tiempo de WMI ni soporte global de
+maquinas Windows con mas de 64 procesadores logicos. En ese caso no se
+publica un porcentaje global potencialmente enganoso.
+
+Este registro actualiza el estado B2 anterior, pero conserva la aceptacion B1.
+Esta autorizacion NO aprueba ni publica B2 y NO permite commit o push.
+La aceptacion de B2 se evaluara despues de las pruebas y de CI.
+TASK-002 completa: ABIERTA.

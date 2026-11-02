@@ -3,14 +3,19 @@ use std::io::{self, Write};
 fn main() {
     let mut args = std::env::args().skip(1);
     let first = args.next();
-    if args.next().is_some() || !matches!(first.as_deref(), None | Some("--telemetry-memory")) {
-        eprintln!("supported option: --telemetry-memory");
+    if args.next().is_some()
+        || !matches!(
+            first.as_deref(),
+            None | Some("--telemetry-memory") | Some("--telemetry-cpu")
+        )
+    {
+        eprintln!("supported options: --telemetry-memory, --telemetry-cpu");
         std::process::exit(2);
     }
-    let output = if first.as_deref() == Some("--telemetry-memory") {
-        adaptive_agent::memory_telemetry_json()
-    } else {
-        adaptive_agent::run()
+    let output = match first.as_deref() {
+        Some("--telemetry-memory") => adaptive_agent::memory_telemetry_json(),
+        Some("--telemetry-cpu") => adaptive_agent::cpu_telemetry_json(),
+        _ => adaptive_agent::run(),
     };
     match output {
         Ok(json) => {

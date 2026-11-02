@@ -32,6 +32,40 @@ pub fn run() -> Result<String, serde_json::Error> {
     to_json(&native_inventory())
 }
 
+/// B2: one opt-in CPU measurement; memory and energy remain uncollected.
+pub fn cpu_telemetry_json() -> Result<String, serde_json::Error> {
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    use adaptive_domain::telemetry::{CpuScope, CpuUsageReading};
+    use adaptive_domain::telemetry::{
+        PowerSource, TelemetryReading, TelemetryReason, TelemetrySnapshot, TelemetrySource,
+    };
+    #[cfg(target_os = "linux")]
+    let cpu = adaptive_platform_linux::cpu_telemetry::collect_cpu_telemetry();
+    #[cfg(target_os = "windows")]
+    let cpu = adaptive_platform_windows::cpu_telemetry::collect_cpu_telemetry();
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    let cpu = CpuUsageReading::unavailable(
+        TelemetrySource::Orchestrator,
+        CpuScope::Unknown,
+        TelemetryReason::NotCollected,
+    );
+    let source = TelemetrySource::Orchestrator;
+    let absent_memory =
+        || TelemetryReading::<u64>::unavailable(source, TelemetryReason::NotCollected);
+    let power = TelemetryReading::<PowerSource>::unavailable(source, TelemetryReason::NotCollected);
+    let battery = TelemetryReading::<u8>::unavailable(source, TelemetryReason::NotCollected);
+    let snapshot = TelemetrySnapshot::new(
+        cpu,
+        absent_memory(),
+        absent_memory(),
+        power,
+        battery,
+        vec![],
+    )
+    .expect("uncollected metrics satisfy snapshot invariants");
+    serde_json::to_string_pretty(&snapshot)
+}
+
 /// B1: a single native memory snapshot, leaving other metrics uncollected.
 pub fn memory_telemetry_json() -> Result<String, serde_json::Error> {
     use adaptive_domain::telemetry::{

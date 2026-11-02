@@ -4,6 +4,8 @@
 //! plataformas; WMI solo se incorpora bajo `cfg(target_os = "windows")`.
 
 #[cfg(target_os = "windows")]
+pub mod cpu_telemetry;
+#[cfg(target_os = "windows")]
 pub mod memory_telemetry;
 pub mod normalization;
 #[cfg(any(target_os = "windows", test))]
