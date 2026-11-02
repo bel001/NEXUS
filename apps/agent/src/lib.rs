@@ -3,6 +3,7 @@
 //! Integración del proveedor nativo y serialización del inventario.
 
 use adaptive_domain::HardwareInventory;
+pub mod policy_engine;
 use adaptive_hardware_discovery::{HardwareProvider, capture};
 
 pub fn inventory_from(provider: &impl HardwareProvider) -> HardwareInventory {
@@ -148,6 +149,66 @@ pub fn memory_telemetry_json() -> Result<String, serde_json::Error> {
             .expect("all absent readings satisfy snapshot invariants")
     });
     serde_json::to_string_pretty(&snapshot)
+}
+
+/// TASK-003: one explicit read-only request, collecting only the existing native metrics.
+/// No background polling, persistence, identifiers, or system modifications.
+pub fn recommendations_json() -> Result<String, serde_json::Error> {
+    use adaptive_domain::telemetry::TelemetrySnapshot;
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    use adaptive_domain::telemetry::{
+        CpuScope, CpuUsageReading, PowerSource, TelemetryReading, TelemetryReason, TelemetrySource,
+    };
+
+    #[cfg(target_os = "linux")]
+    let cpu = adaptive_platform_linux::cpu_telemetry::collect_cpu_telemetry();
+    #[cfg(target_os = "windows")]
+    let cpu = adaptive_platform_windows::cpu_telemetry::collect_cpu_telemetry();
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    let cpu = CpuUsageReading::unavailable(
+        TelemetrySource::Orchestrator,
+        CpuScope::Unknown,
+        TelemetryReason::NotCollected,
+    );
+
+    #[cfg(target_os = "linux")]
+    let (total, available) = adaptive_platform_linux::memory_telemetry::collect_memory_telemetry();
+    #[cfg(target_os = "windows")]
+    let (total, available) =
+        adaptive_platform_windows::memory_telemetry::collect_memory_telemetry();
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    let (total, available) = (
+        TelemetryReading::<u64>::unsupported(
+            TelemetrySource::Orchestrator,
+            TelemetryReason::NotCollected,
+        ),
+        TelemetryReading::<u64>::unsupported(
+            TelemetrySource::Orchestrator,
+            TelemetryReason::NotCollected,
+        ),
+    );
+
+    #[cfg(target_os = "linux")]
+    let (power, battery) = adaptive_platform_linux::power_telemetry::collect_power_telemetry();
+    #[cfg(target_os = "windows")]
+    let (power, battery) = adaptive_platform_windows::power_telemetry::collect_power_telemetry();
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    let (power, battery) = (
+        TelemetryReading::<PowerSource>::unsupported(
+            TelemetrySource::Orchestrator,
+            TelemetryReason::NotCollected,
+        ),
+        TelemetryReading::<u8>::unsupported(
+            TelemetrySource::Orchestrator,
+            TelemetryReason::NotCollected,
+        ),
+    );
+
+    let output = match TelemetrySnapshot::new(cpu, total, available, power, battery, vec![]) {
+        Ok(snapshot) => policy_engine::evaluate(&snapshot).as_value(),
+        Err(_) => policy_engine::invalid_snapshot_report().as_value(),
+    };
+    serde_json::to_string_pretty(&output)
 }
 
 #[cfg(test)]

@@ -6,16 +6,22 @@ fn main() {
     if args.next().is_some()
         || !matches!(
             first.as_deref(),
-            None | Some("--telemetry-memory") | Some("--telemetry-cpu") | Some("--telemetry-power")
+            None | Some("--telemetry-memory")
+                | Some("--telemetry-cpu")
+                | Some("--telemetry-power")
+                | Some("--recommendations")
         )
     {
-        eprintln!("supported options: --telemetry-memory, --telemetry-cpu, --telemetry-power");
+        eprintln!(
+            "supported options: --telemetry-memory, --telemetry-cpu, --telemetry-power, --recommendations"
+        );
         std::process::exit(2);
     }
     let output = match first.as_deref() {
         Some("--telemetry-memory") => adaptive_agent::memory_telemetry_json(),
         Some("--telemetry-cpu") => adaptive_agent::cpu_telemetry_json(),
         Some("--telemetry-power") => adaptive_agent::power_telemetry_json(),
+        Some("--recommendations") => adaptive_agent::recommendations_json(),
         _ => adaptive_agent::run(),
     };
     match output {
