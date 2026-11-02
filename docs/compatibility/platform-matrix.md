@@ -57,4 +57,4 @@ Esta evidencia no demuestra compatibilidad universal con
 hardware AMD, otros portátiles ni equipos sin batería.
 Se preparó un ejemplo público reducido de Windows en
 `docs/examples/hardware-inventory-windows.public.anonymized.json`.
-La captura original permanece privada y la aceptación final sigue pendiente.
+La captura original permanece privada. TASK-001 fue aceptada formalmente el 2026-11-01.

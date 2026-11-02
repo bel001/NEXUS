@@ -635,3 +635,18 @@ TASK-001 **no** se declara terminada ni aceptada. Siguen pendientes:
 - La captura Windows original permanece privada; se prepara una copia pública separada y anonimizada.
 - No se cambió el código, las dependencias ni el workflow.
 - Pendiente: autorización de publicación del ejemplo público y aceptación final.
+
+## 22. Cierre formal de TASK-001 — 2026-11-01
+
+- Aceptación expresa del propietario registrada el 2026-11-01.
+- Commit base de aceptación: `3cea5a259fea34c8d01e8696ccf2a1320a87c0ab`.
+- Rust CI #6: 41376861193, cuatro trabajos completados correctamente.
+- Ejemplo público Windows: `docs/examples/hardware-inventory-windows.public.anonymized.json`.
+- Captura original Windows privada y excluida del seguimiento Git.
+- HD-AUD-001: TLP y auto-cpufreq permanecen `unavailable` por limitación aceptada.
+- HD-AUD-002: validación WMI física Windows PASS técnico.
+- HD-AUD-003 a HD-AUD-007: PASS previo.
+- No se modificó el código Rust para este cierre.
+- La aceptación no implica compatibilidad universal ni anonimato absoluto.
+- Licencia general del repositorio: decisión todavía pendiente.
+- TASK-002 no iniciada.

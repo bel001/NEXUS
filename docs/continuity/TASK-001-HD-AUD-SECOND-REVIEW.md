@@ -41,7 +41,7 @@ No se ejecutan procesos auxiliares ni se agregan dependencias.
 - Captura original Windows privada; ejemplo público anonimizado preparado en `docs/examples/hardware-inventory-windows.public.anonymized.json`.
 - No afirmar compatibilidad universal.
 - No publicar la captura original. El ejemplo público conserva un riesgo residual de correlación por características técnicas.
-- TASK-001 pendiente de aceptación final.
+- TASK-001 aceptada formalmente por el propietario el 2026-11-01, después de CI #6.
 - TASK-002 no iniciada.
 
 ## Comprobaciones de esta sesión

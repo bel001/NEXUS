@@ -1,6 +1,6 @@
 # TASK-001 — Hardware Discovery read-only
 
-- Estado: CI y validación física Windows verificadas; documentación y aceptación final pendientes
+- Estado: ACEPTADA por el propietario el 2026-11-01; TASK-001 completada
 - Prioridad: P0
 - Plataforma: Windows 11 + Linux x86_64
 - Tipo: solo lectura
@@ -118,7 +118,7 @@ La limitación de TLP y auto-cpufreq como `unavailable` fue
 aceptada expresamente para TASK-001. Esto no equivale a
 detección positiva de esos gestores.
 
-La aceptación final de TASK-001 permanece pendiente.
+La aceptación final de TASK-001 fue concedida expresamente por el propietario el 2026-11-01, tras las pruebas físicas y la CI #6 satisfactoria.
 
 ## Entrega esperada
 
@@ -153,4 +153,4 @@ Ver `docs/tasks/definition-of-done.md`.
 - HD-AUD-002: PASS técnico sobre hardware físico.
 - El inventario Windows original permanece privado; solo se prepara para publicar el ejemplo público reducido.
 - La revisión de privacidad es preliminar; no garantiza anonimato absoluto.
-- TASK-001 no se declara terminada hasta la publicación autorizada del ejemplo y la aceptación final de la entrega.
+- TASK-001 completada y aceptada el 2026-11-01. Los ejemplos anonimizados de Linux y Windows están publicados; la captura Windows original sigue privada.

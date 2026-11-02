@@ -3,7 +3,7 @@
 ## 1. Estado y alcance
 
 - Diseño: aprobado por el propietario para implementación.
-- Implementación: WMI y CI Windows validadas; aceptación final pendiente.
+- Implementación: TASK-001 validada y aceptada formalmente el 2026-11-01.
 - Baseline documental: `252d443`.
 - Plataformas: Windows 11 y Linux x86_64.
 - Nivel de acción: L0, lectura local.
@@ -12,7 +12,7 @@
 Este documento consolida el diseño V4 y las aclaraciones V4.1 y V4.2. Es la
 referencia técnica de `TASK-001`. La implementación se validó localmente en
 Linux con stable y Rust 1.88. La detección D-Bus de power-profiles-daemon
-funciona con evidencia positiva y negativa. El código Windows compiló y ejecutó pruebas WMI nativas en CI y sobre hardware Windows 11 físico. La aceptación final de TASK-001 sigue pendiente.
+funciona con evidencia positiva y negativa. El código Windows compiló y ejecutó pruebas WMI nativas en CI y sobre hardware Windows 11 físico. La aceptación final de TASK-001 quedó registrada el 2026-11-01.
 
 El objetivo es producir un inventario normalizado y versionado. Una fuente
 ausente o un componente que falle no debe impedir devolver el resto. Quedan

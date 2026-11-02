@@ -31,7 +31,7 @@ Windows dispone de pruebas WMI nativas aprobadas en CI y
 sobre el equipo Windows 11 físico del propietario.
 
 Hardware Discovery permanece estrictamente read-only.
-TASK-001 todavía requiere aceptación final.
+TASK-001 fue aceptada formalmente el 2026-11-01.
 
 ## Requisitos de desarrollo
 
@@ -57,14 +57,14 @@ Para emitir un inventario JSON en la plataforma nativa:
 cargo run --locked -p adaptive-agent
 ```
 
-## Primera tarea en revisión
+## Primera tarea completada
 
 Leer `docs/architecture/hardware-discovery.md`, los ADR-0005 a ADR-0007 y
 `docs/tasks/TASK-001-hardware-discovery.md`.
 
 El diseño y el alcance están aprobados. La implementación local está lista
 para revisión; la matriz CI y la validación Windows física se completaron.
-TASK-001 continúa pendiente de aceptación final.
+TASK-001 fue aceptada formalmente el 2026-11-01.
 
 ## Estructura
 
@@ -104,5 +104,5 @@ Pendiente de decisión. No publicar ni redistribuir el código como open source 
 - power-profiles-daemon: consulta D-Bus validada en Linux.
 - TLP y auto-cpufreq: `unavailable` por limitación aprobada.
 - Ejemplo Windows público reducido: `docs/examples/hardware-inventory-windows.public.anonymized.json`. La captura original permanece privada.
-- TASK-001 todavía requiere aceptación final.
+- TASK-001 fue aceptada formalmente el 2026-11-01.
 - La licencia del proyecto sigue pendiente de decisión.
