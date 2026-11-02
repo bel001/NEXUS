@@ -26,6 +26,7 @@ pub enum TelemetrySource {
     LinuxPowerSupply,
     WindowsSystemTimes,
     WindowsMemoryStatus,
+    WindowsWmiMemory,
     WindowsPowerStatus,
 }
 
@@ -51,6 +52,7 @@ pub enum TelemetryReason {
     FirstSample,
     ReadFailure,
     InvalidCounters,
+    InvalidMemory,
     InvalidWindow,
     PartialScope,
     NoBattery,
@@ -212,6 +214,10 @@ impl TelemetryReading<u8> {
 }
 
 impl TelemetryReading<u64> {
+    pub fn bytes_now(value: u64, source: TelemetrySource, quality: TelemetryQuality) -> Self {
+        Self::bytes(value, source, OffsetDateTime::now_utc(), quality)
+    }
+
     pub fn bytes(
         value: u64,
         source: TelemetrySource,

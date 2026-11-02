@@ -361,3 +361,39 @@ Limitaciones:
 
 La Fase B requiere especificacion y autorizacion
 expresas antes de comenzar su implementacion.
+
+## 16. Autorizacion limitada de Fase B1
+
+Fecha: 2026-11-01.
+Estado: AUTORIZADA PARA IMPLEMENTACION, NO ACEPTADA.
+
+Alcance:
+- Captura real bajo demanda de memoria visible y disponible.
+- Windows: WMI Win32_OperatingSystem, propiedades de lectura.
+- Linux: /proc/meminfo, MemTotal y MemAvailable.
+- Conversiones comprobadas y estados de disponibilidad.
+- Timestamps, fuentes, privacidad y errores parciales.
+- Pruebas deterministas y validacion nativa.
+- CI Windows y Ubuntu, Rust 1.88 y stable.
+
+Restricciones:
+- Sin nuevas dependencias sin aprobacion separada.
+- Sin procesos auxiliares ni conexiones de red.
+- Sin privilegios elevados ni escritura de configuracion.
+- Sin polling continuo ni historial persistente.
+- Sin modificar HardwareInventory esquema 1.
+- Sin alterar el contrato de Fase A innecesariamente.
+- Si una fuente no es fiable, devolver unavailable o error.
+- Medir coste real antes de afirmar limites cumplidos.
+
+Fuera de alcance:
+- Uso CPU real y ventanas de muestreo.
+- Bateria, eventos energeticos y suspension.
+- Servicios residentes, politicas y acciones.
+- Cierre completo de TASK-002.
+
+La aceptacion de B1 requiere pruebas y autorizacion
+posterior. Este registro no autoriza commit ni push.
+
+CI de partida: 41385864867.
+Commit de partida: e17149d.

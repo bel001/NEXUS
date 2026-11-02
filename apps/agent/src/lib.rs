@@ -32,6 +32,50 @@ pub fn run() -> Result<String, serde_json::Error> {
     to_json(&native_inventory())
 }
 
+/// B1: a single native memory snapshot, leaving other metrics uncollected.
+pub fn memory_telemetry_json() -> Result<String, serde_json::Error> {
+    use adaptive_domain::telemetry::{
+        CpuScope, CpuUsageReading, PowerSource, TelemetryReading, TelemetryReason,
+        TelemetrySnapshot, TelemetrySource,
+    };
+    #[cfg(target_os = "linux")]
+    let (total, available) = adaptive_platform_linux::memory_telemetry::collect_memory_telemetry();
+    #[cfg(target_os = "windows")]
+    let (total, available) =
+        adaptive_platform_windows::memory_telemetry::collect_memory_telemetry();
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
+    let (total, available) = (
+        TelemetryReading::<u64>::unsupported(
+            TelemetrySource::Orchestrator,
+            TelemetryReason::NotCollected,
+        ),
+        TelemetryReading::<u64>::unsupported(
+            TelemetrySource::Orchestrator,
+            TelemetryReason::NotCollected,
+        ),
+    );
+    let source = TelemetrySource::Orchestrator;
+    let cpu =
+        CpuUsageReading::unavailable(source, CpuScope::Unknown, TelemetryReason::NotCollected);
+    let power = TelemetryReading::<PowerSource>::unavailable(source, TelemetryReason::NotCollected);
+    let battery = TelemetryReading::<u8>::unavailable(source, TelemetryReason::NotCollected);
+    let snapshot = TelemetrySnapshot::new(
+        cpu.clone(),
+        total,
+        available,
+        power.clone(),
+        battery.clone(),
+        vec![],
+    )
+    .unwrap_or_else(|_| {
+        let total = TelemetryReading::<u64>::error(source, TelemetryReason::InvalidMemory);
+        let available = TelemetryReading::<u64>::error(source, TelemetryReason::InvalidMemory);
+        TelemetrySnapshot::new(cpu, total, available, power, battery, vec![])
+            .expect("all absent readings satisfy snapshot invariants")
+    });
+    serde_json::to_string_pretty(&snapshot)
+}
+
 #[cfg(test)]
 mod tests {
     use adaptive_domain::{
