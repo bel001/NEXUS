@@ -8,6 +8,8 @@ pub mod cpu_telemetry;
 #[cfg(target_os = "windows")]
 pub mod memory_telemetry;
 pub mod normalization;
+#[cfg(target_os = "windows")]
+pub mod power_telemetry;
 #[cfg(any(target_os = "windows", test))]
 mod queries;
 

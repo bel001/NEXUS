@@ -466,3 +466,26 @@ Limitaciones:
 - No se certifica el presupuesto de consumo energetico o latencia WMI.
 - No se autorizan nuevas fases, bateria ni cambios del sistema.
 - TASK-002 sigue ABIERTA.
+
+## 20. Autorizacion limitada de Fase B3 (alimentacion y bateria)
+
+Autorizacion expresa del propietario en la conversacion: 2026-11-02.
+Estado: AUTORIZADA PARA IMPLEMENTACION, NO ACEPTADA.
+
+Alcance:
+- Lectura puntual del origen de alimentacion y porcentaje de bateria.
+- Windows: WMI Win32_Battery, proyeccion solo de BatteryStatus y EstimatedChargeRemaining.
+- Linux: /sys/class/power_supply, atributos tipo, online, present, status, capacity.
+- Valores 0..100, evidencia de fuente, UTC, estados de no bateria y errores parciales.
+- Pruebas deterministas y smoke test de sysfs nativo en Ubuntu CI.
+- Rust 1.88/stable, Windows/Ubuntu. Sin cambio a HardwareInventory V1.
+
+Limitaciones:
+- Win32_Battery no demuestra CA en todos los estados; no inventar fuente.
+- Sin bateria WMI no demuestra alimentacion CA.
+- Multiples baterias no se combinan sin base de ponderacion.
+- Una lectura no certifica suspend/resume ni presupuesto energetico.
+- Sin unsafe, FFI, procesos auxiliares, red, elevacion, polling, escritura ni configuracion.
+- Sin nuevas dependencias, nuevos servicios ni cambios de perfil energetico.
+- No se autoriza commit, push ni la aceptacion automatica de B3.
+- TASK-002 permanece ABIERTA; fases posteriores NO AUTORIZADAS.

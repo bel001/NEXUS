@@ -29,6 +29,7 @@ pub enum TelemetrySource {
     WindowsWmiMemory,
     WindowsWmiCpu,
     WindowsPowerStatus,
+    WindowsWmiBattery,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -195,6 +196,13 @@ impl TelemetryReading<f64> {
 }
 
 impl TelemetryReading<u8> {
+    pub fn percent_now(
+        value: u8,
+        source: TelemetrySource,
+        quality: TelemetryQuality,
+    ) -> Result<Self, TelemetryValidationError> {
+        Self::percent(value, source, OffsetDateTime::now_utc(), quality)
+    }
     pub fn percent(
         value: u8,
         source: TelemetrySource,
@@ -236,6 +244,9 @@ impl TelemetryReading<u64> {
 }
 
 impl TelemetryReading<PowerSource> {
+    pub fn power_now(value: PowerSource, source: TelemetrySource) -> Self {
+        Self::power(value, source, OffsetDateTime::now_utc())
+    }
     pub fn power(value: PowerSource, source: TelemetrySource, measured_at: OffsetDateTime) -> Self {
         Self::present(value, source, None, measured_at, TelemetryQuality::Measured)
     }

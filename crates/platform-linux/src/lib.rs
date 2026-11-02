@@ -6,6 +6,7 @@ pub mod cpu_telemetry;
 pub mod memory_telemetry;
 mod parsers;
 mod power_profiles;
+pub mod power_telemetry;
 mod storage;
 
 use std::fs;
