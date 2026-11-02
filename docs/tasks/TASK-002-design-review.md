@@ -331,3 +331,33 @@ de consumo.
 
 Esta autorizacion no significa que TASK-002 este
 completada ni que sus criterios finales esten aprobados.
+
+## 15. Aceptacion formal de Fase A
+
+Aceptacion expresa del propietario: 2026-11-01.
+
+Evidencia:
+- Implementacion: commit a66622c.
+- CI: ejecucion 41385211033.
+- Resultado CI: completed / success.
+- Windows Rust 1.88: PASS.
+- Windows Rust stable: PASS.
+- Ubuntu Rust 1.88: PASS.
+- Ubuntu Rust stable: PASS.
+- Contrato TelemetrySnapshot y calculos puros.
+- Pruebas, formato y Clippy verificados.
+- Sin cambios al contrato HardwareInventory V1.
+
+Decision:
+FASE A ACEPTADA como incremento independiente.
+
+Limitaciones:
+- No incluye adquisicion nativa de telemetria.
+- No incluye muestreo real ni servicio residente.
+- No demuestra presupuestos de consumo del colector.
+- No completa TASK-002.
+- No autoriza Fase B.
+- No autoriza nuevas dependencias ni cambios del sistema.
+
+La Fase B requiere especificacion y autorizacion
+expresas antes de comenzar su implementacion.
