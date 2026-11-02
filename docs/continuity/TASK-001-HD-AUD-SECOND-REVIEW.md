@@ -38,9 +38,9 @@ No se ejecutan procesos auxiliares ni se agregan dependencias.
 
 ## Riesgos y pendientes
 
-- Captura Windows local, todavía no versionada.
+- Captura original Windows privada; ejemplo público anonimizado preparado en `docs/examples/hardware-inventory-windows.public.anonymized.json`.
 - No afirmar compatibilidad universal.
-- No publicar inventario sin aprobación de privacidad.
+- No publicar la captura original. El ejemplo público conserva un riesgo residual de correlación por características técnicas.
 - TASK-001 pendiente de aceptación final.
 - TASK-002 no iniciada.
 

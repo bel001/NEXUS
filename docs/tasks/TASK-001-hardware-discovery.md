@@ -96,7 +96,7 @@ Un valor ausente nunca se convierte en `0`, cadena vacía engañosa o valor inve
 - [x] No hay llamadas de red.
 - [x] Tests automatizados pasan en CI Windows y Ubuntu, con Rust 1.88 y stable.
 - [x] README documenta limitaciones conocidas.
-- [ ] Se adjunta ejemplo JSON real anonimizado de cada plataforma.
+- [x] Se adjuntan ejemplos JSON reales anonimizados de Linux y Windows; el ejemplo Windows es una copia pública reducida.
 - [x] Se informa el consumo del proceso durante una sesión de descubrimiento.
 - [x] Criterio de gestores energéticos acotado por decisión expresa del propietario: power-profiles-daemon se detecta por D-Bus; TLP y auto-cpufreq se mantienen unavailable, sin afirmar detección positiva. Limitación aceptada para TASK-001.
 
@@ -112,7 +112,7 @@ La matriz CI Ubuntu/Windows con Rust 1.88 y stable pasó.
 El 1 de noviembre de 2026 se ejecutó el proveedor WMI en el
 Windows 11 físico del propietario. Se verificaron CPU, memoria,
 GPU, batería, almacenamiento, esquema JSON y cero incidencias.
-La captura Windows se mantiene local y sin versionar.
+La captura original Windows permanece privada. La copia pública está en `docs/examples/hardware-inventory-windows.public.anonymized.json`; `captured_at` y los modelos identificativos fueron anonimizados.
 
 La limitación de TLP y auto-cpufreq como `unavailable` fue
 aceptada expresamente para TASK-001. Esto no equivale a
@@ -151,6 +151,6 @@ Ver `docs/tasks/definition-of-done.md`.
 - HD-AUD-001: alcance reducido con aprobación expresa del propietario.
 - TLP y auto-cpufreq: `unavailable` sin valor positivo o negativo inventado.
 - HD-AUD-002: PASS técnico sobre hardware físico.
-- El ejemplo Windows permanece local y sin versionar hasta autorizar su publicación.
+- El inventario Windows original permanece privado; solo se prepara para publicar el ejemplo público reducido.
 - La revisión de privacidad es preliminar; no garantiza anonimato absoluto.
-- TASK-001 no se declara terminada hasta la aceptación final de la entrega y la resolución del ejemplo pendiente de versionar.
+- TASK-001 no se declara terminada hasta la publicación autorizada del ejemplo y la aceptación final de la entrega.

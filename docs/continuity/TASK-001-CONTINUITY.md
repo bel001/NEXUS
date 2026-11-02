@@ -632,6 +632,6 @@ TASK-001 **no** se declara terminada ni aceptada. Siguen pendientes:
   TLP y auto-cpufreq siguen `unavailable`.
 - HD-AUD-002: evidencia física suficiente para PASS técnico.
 - HD-AUD-003 a HD-AUD-007: PASS previamente documentados.
-- La captura Windows permanece sin versionar ni publicar.
+- La captura Windows original permanece privada; se prepara una copia pública separada y anonimizada.
 - No se cambió el código, las dependencias ni el workflow.
-- Pendiente: publicación autorizada del ejemplo y aceptación final.
+- Pendiente: autorización de publicación del ejemplo público y aceptación final.

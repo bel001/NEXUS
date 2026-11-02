@@ -103,6 +103,6 @@ Pendiente de decisión. No publicar ni redistribuir el código como open source 
 - Hardware Discovery permanece estrictamente read-only.
 - power-profiles-daemon: consulta D-Bus validada en Linux.
 - TLP y auto-cpufreq: `unavailable` por limitación aprobada.
-- Captura Windows anonimizada generada; publicación pendiente.
+- Ejemplo Windows público reducido: `docs/examples/hardware-inventory-windows.public.anonymized.json`. La captura original permanece privada.
 - TASK-001 todavía requiere aceptación final.
 - La licencia del proyecto sigue pendiente de decisión.

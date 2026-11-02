@@ -1,0 +1,237 @@
+{
+    "schema_version":  1,
+    "captured_at":  null,
+    "operating_system":  {
+                             "value":  {
+                                           "name":  {
+                                                        "value":  "Microsoft Windows 11 Pro",
+                                                        "status":  "available",
+                                                        "source":  "windows_wmi_cimv2"
+                                                    },
+                                           "version":  {
+                                                           "value":  "[anonymized]",
+                                                           "status":  "available",
+                                                           "source":  "windows_wmi_cimv2"
+                                                       },
+                                           "distribution":  {
+                                                                "value":  null,
+                                                                "status":  "unsupported",
+                                                                "source":  "windows_wmi_cimv2",
+                                                                "detail":  "Linux distribution does not apply to Windows"
+                                                            },
+                                           "binary_architecture":  {
+                                                                       "value":  "x86_64",
+                                                                       "status":  "available",
+                                                                       "source":  "runtime"
+                                                                   },
+                                           "kernel_architecture":  {
+                                                                       "value":  null,
+                                                                       "status":  "unavailable",
+                                                                       "source":  "windows_wmi_cimv2",
+                                                                       "detail":  "kernel architecture is not exposed by the selected query"
+                                                                   },
+                                           "os_bitness":  {
+                                                              "value":  "bits64",
+                                                              "status":  "available",
+                                                              "source":  "windows_wmi_cimv2"
+                                                          }
+                                       },
+                             "status":  "available",
+                             "source":  "windows_wmi_cimv2"
+                         },
+    "system_manufacturer":  {
+                                "value":  {
+                                              "manufacturer":  {
+                                                                   "value":  "[anonymized]",
+                                                                   "status":  "available",
+                                                                   "source":  "windows_wmi_cimv2"
+                                                               },
+                                              "model":  {
+                                                            "value":  "[anonymized]",
+                                                            "status":  "available",
+                                                            "source":  "windows_wmi_cimv2"
+                                                        }
+                                          },
+                                "status":  "available",
+                                "source":  "windows_wmi_cimv2"
+                            },
+    "cpu":  {
+                "value":  {
+                              "manufacturer":  {
+                                                   "value":  "GenuineIntel",
+                                                   "status":  "available",
+                                                   "source":  "windows_wmi_cimv2"
+                                               },
+                              "model":  {
+                                            "value":  "[anonymized]",
+                                            "status":  "available",
+                                            "source":  "windows_wmi_cimv2"
+                                        },
+                              "processor_architecture":  {
+                                                             "value":  "x86_64",
+                                                             "status":  "available",
+                                                             "source":  "windows_wmi_cimv2"
+                                                         },
+                              "package_count":  {
+                                                    "value":  null,
+                                                    "status":  "unavailable",
+                                                    "source":  "windows_wmi_cimv2",
+                                                    "detail":  "package count is not queried"
+                                                },
+                              "logical_processor_count":  {
+                                                              "value":  12,
+                                                              "status":  "available",
+                                                              "source":  "windows_wmi_cimv2",
+                                                              "unit":  "count"
+                                                          },
+                              "online_physical_core_count":  {
+                                                                 "value":  10,
+                                                                 "status":  "available",
+                                                                 "source":  "windows_wmi_cimv2",
+                                                                 "unit":  "count"
+                                                             }
+                          },
+                "status":  "available",
+                "source":  "windows_wmi_cimv2"
+            },
+    "memory":  {
+                   "value":  {
+                                 "total_visible_bytes":  {
+                                                             "value":  16849256448,
+                                                             "status":  "available",
+                                                             "source":  "windows_wmi_cimv2",
+                                                             "unit":  "bytes"
+                                                         }
+                             },
+                   "status":  "available",
+                   "source":  "windows_wmi_cimv2"
+               },
+    "gpus":  {
+                 "value":  [
+                               {
+                                   "manufacturer":  {
+                                                        "value":  "Intel Corporation",
+                                                        "status":  "available",
+                                                        "source":  "windows_wmi_cimv2"
+                                                    },
+                                   "model":  {
+                                                 "value":  "[anonymized]",
+                                                 "status":  "available",
+                                                 "source":  "windows_wmi_cimv2"
+                                             }
+                               }
+                           ],
+                 "status":  "available",
+                 "source":  "windows_wmi_cimv2"
+             },
+    "storage":  {
+                    "value":  [
+                                  {
+                                      "presentation":  {
+                                                           "value":  "disk-1",
+                                                           "status":  "available",
+                                                           "source":  "windows_wmi_storage"
+                                                       },
+                                      "medium_technology":  {
+                                                                "value":  "solid_state",
+                                                                "status":  "available",
+                                                                "source":  "windows_wmi_storage"
+                                                            },
+                                      "transport":  {
+                                                        "value":  "nvme",
+                                                        "status":  "available",
+                                                        "source":  "windows_wmi_storage"
+                                                    },
+                                      "nature":  {
+                                                     "value":  "physical",
+                                                     "status":  "available",
+                                                     "source":  "windows_wmi_storage"
+                                                 },
+                                      "removability":  {
+                                                           "value":  null,
+                                                           "status":  "unavailable",
+                                                           "source":  "windows_wmi_storage",
+                                                           "detail":  "physical removability is not exposed by the approved query"
+                                                       },
+                                      "rotation":  {
+                                                       "value":  "non_rotational",
+                                                       "status":  "available",
+                                                       "source":  "windows_wmi_storage"
+                                                   },
+                                      "supports_removable_media":  {
+                                                                       "value":  null,
+                                                                       "status":  "unavailable",
+                                                                       "source":  "windows_wmi_storage",
+                                                                       "detail":  "physical-disk query does not prove removable-media support"
+                                                                   },
+                                      "capacity_bytes":  {
+                                                             "value":  1000204886016,
+                                                             "status":  "available",
+                                                             "source":  "windows_wmi_storage",
+                                                             "unit":  "bytes"
+                                                         },
+                                      "reported_sector_size_bytes":  {
+                                                                         "value":  null,
+                                                                         "status":  "unavailable",
+                                                                         "source":  "windows_wmi_storage",
+                                                                         "detail":  "no generic reported sector value"
+                                                                     },
+                                      "logical_sector_size_bytes":  {
+                                                                        "value":  512,
+                                                                        "status":  "available",
+                                                                        "source":  "windows_wmi_storage",
+                                                                        "unit":  "bytes_per_sector"
+                                                                    },
+                                      "physical_sector_size_bytes":  {
+                                                                         "value":  512,
+                                                                         "status":  "available",
+                                                                         "source":  "windows_wmi_storage",
+                                                                         "unit":  "bytes_per_sector"
+                                                                     }
+                                  }
+                              ],
+                    "status":  "available",
+                    "source":  "windows_wmi_storage"
+                },
+    "batteries":  {
+                      "value":  [
+                                    {
+                                        "percentage":  {
+                                                           "value":  25,
+                                                           "status":  "available",
+                                                           "source":  "windows_wmi_cimv2",
+                                                           "unit":  "percent"
+                                                       },
+                                        "direction":  {
+                                                          "value":  "unknown",
+                                                          "status":  "available",
+                                                          "source":  "windows_wmi_cimv2"
+                                                      },
+                                        "level":  {
+                                                      "value":  "unknown",
+                                                      "status":  "available",
+                                                      "source":  "windows_wmi_cimv2"
+                                                  }
+                                    }
+                                ],
+                      "status":  "available",
+                      "source":  "windows_wmi_cimv2"
+                  },
+    "capabilities":  {
+                         "value":  [
+                                       {
+                                           "kind":  "hardware_discovery",
+                                           "available":  {
+                                                             "value":  true,
+                                                             "status":  "available",
+                                                             "source":  "windows_wmi_cimv2"
+                                                         }
+                                       }
+                                   ],
+                         "status":  "available",
+                         "source":  "windows_wmi_cimv2"
+                     },
+    "issues":  [
+
+               ]
+}
