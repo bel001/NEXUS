@@ -110,3 +110,29 @@ mod tests {
         assert_eq!(total.status(), TelemetryStatus::Error);
     }
 }
+
+#[cfg(all(test, target_os = "linux"))]
+mod live_linux_meminfo_smoke {
+    use super::*;
+    use adaptive_domain::telemetry::{TelemetryQuality, TelemetryStatus};
+
+    #[test]
+    fn native_proc_meminfo_returns_consistent_memory() {
+        let (total, available) = collect_memory_telemetry();
+
+        assert_eq!(total.status(), TelemetryStatus::Available);
+        assert_eq!(available.status(), TelemetryStatus::Available);
+
+        assert_eq!(total.quality(), Some(TelemetryQuality::Measured));
+        assert_eq!(available.quality(), Some(TelemetryQuality::Estimated));
+
+        let total_bytes = total.value().copied().expect("MemTotal available");
+        let available_bytes = available.value().copied().expect("MemAvailable available");
+
+        assert!(total_bytes > 0);
+        assert!(available_bytes <= total_bytes);
+
+        assert!(total.measured_at().is_some());
+        assert!(available.measured_at().is_some());
+    }
+}
