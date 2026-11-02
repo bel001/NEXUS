@@ -1,6 +1,6 @@
 # TASK-002 — Telemetria local read-only
 
-- Estado: BORRADOR, NO APROBADO
+- Estado: IMPLEMENTACION PARCIAL; TASK-002 ABIERTA
 - Prioridad propuesta: P0
 - Plataforma objetivo: Windows 11 y Linux x86_64
 - Dependencia: TASK-001 aceptada
@@ -119,7 +119,7 @@ antes de iniciar codigo.
 Fase A: IMPLEMENTADA Y ACEPTADA el 2026-11-01.
 Commit de implementacion: a66622c.
 CI: 41385211033, cuatro trabajos satisfactorios.
-Fase B: NO INICIADA NI AUTORIZADA.
+Fase B1: IMPLEMENTADA Y ACEPTADA el 2026-11-01 (c755ddd y bf6b21f; CI 41388343658). Fase B2: NO AUTORIZADA.
 TASK-002 completa: ABIERTA.
 
 La autorizacion limitada y la aceptacion de Fase A

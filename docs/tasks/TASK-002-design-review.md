@@ -1,6 +1,6 @@
 # TASK-002 - Revision de contrato y arquitectura
 
-Estado: PROPUESTA PARA APROBACION, NO APROBADA.
+Estado: Fases A y B1 aceptadas; TASK-002 ABIERTA.
 Baseline: 66a37a7.
 Documento principal: TASK-002-telemetry-read-only.md.
 
@@ -397,3 +397,26 @@ posterior. Este registro no autoriza commit ni push.
 
 CI de partida: 41385864867.
 Commit de partida: e17149d.
+
+## 17. Aceptacion formal de Fase B1
+
+Fecha: 2026-11-01.
+Decision expresa del propietario: FASE B1 ACEPTADA.
+
+Evidencia:
+- Implementacion nativa: c755ddd.
+- Prueba real Linux en CI: bf6b21f.
+- CI: 41388343658, cuatro trabajos exitosos.
+- Windows: lectura nativa de memoria verificada localmente.
+- Linux: lectura de /proc/meminfo verificada en Ubuntu CI.
+- Rust 1.88 y stable: PASS.
+- Sin nuevas dependencias ni cambios del sistema.
+- Captura privada original no versionada.
+
+Limites:
+- Validacion Linux realizada en runner Ubuntu; no en todos los equipos.
+- Presupuesto de consumo aun no certificado.
+- No se autorizan B2, CPU real ni bateria.
+- Sin polling residente, procesos auxiliares ni telemetria de red.
+- HardwareInventory V1 permanece sin cambios.
+- TASK-002 sigue ABIERTA.
