@@ -10,3 +10,5 @@ mod observation;
 
 pub use inventory::*;
 pub use observation::*;
+
+pub mod telemetry;

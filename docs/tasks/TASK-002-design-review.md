@@ -283,11 +283,51 @@ Ningun presupuesto se declara cumplido sin pruebas.
 - [ ] Aprobar presupuesto y pruebas.
 - [ ] Autorizar expresamente implementacion.
 
-Estado final: BORRADOR NO APROBADO.
-No modificar codigo Rust ni iniciar TASK-002.
+Estado general: TASK-002 NO APROBADA EN SU CONJUNTO.
+Fase A: autorizada expresamente por el propietario el 2026-11-01.
+Fase B y aceptacion final: pendientes.
 
 Fuentes:
 https://doc.rust-lang.org/cargo/commands/cargo-metadata.html
 https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getsystemtimes
 https://www.kernel.org/doc/html/latest/filesystems/proc.html
 https://docs.kernel.org/power/power_supply_class.html
+
+## 14. Autorizacion limitada de Fase A
+
+La autorizacion expresada en consola permite unicamente
+el primer incremento de codigo, bajo estas condiciones:
+
+- Modificar adaptive-domain para agregar un contrato
+  de telemetria independiente de HardwareInventory.
+- Definir TelemetrySnapshot, TelemetryReading<T>,
+  CpuUsageReading, CpuScope y PowerSource.
+- Usar serde y time ya existentes en adaptive-domain.
+- Estados: available, unavailable, unsupported,
+  permission_denied y error.
+- available requiere un valor valido y timestamp UTC.
+- Estados sin valor requieren value null.
+- Rechazar porcentajes no finitos o fuera de 0..100.
+- quality solo existe cuando existe valor valido.
+- CPU disponible exige scope system_total y
+  sample_window_ms mayor que cero.
+- Funciones matematicas puras con aritmetica comprobada.
+- Fixtures y pruebas para errores y valores extremos.
+- Mantener #![forbid(unsafe_code)].
+- Mantener sin cambios HardwareInventory esquema 1.
+
+No se autorizan todavia:
+
+- APIs nativas Windows o Linux;
+- muestreo temporal real;
+- nuevos crates o dependencias;
+- tareas residentes;
+- cambios del sistema;
+- motor de politicas o acciones.
+
+La fase B requiere una aprobacion separada que defina
+ventanas de muestreo, suspension, timeouts y presupuesto
+de consumo.
+
+Esta autorizacion no significa que TASK-002 este
+completada ni que sus criterios finales esten aprobados.
