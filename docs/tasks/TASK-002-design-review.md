@@ -532,3 +532,26 @@ Fuera de alcance:
 - Cambiar HardwareInventory, TelemetrySnapshot, dependencias o CI.
 - Certificar presupuestos sin evidencia o cerrar TASK-002.
 - Commit o push automaticos. Requieren autorizacion separada.
+
+## 23. Aceptacion formal de Fase B4 (coste del colector)
+
+Fecha: 2026-11-02. Decision expresa del propietario: `ACEPTO FASE B4 TASK-002`.
+Estado: FASE B4 ACEPTADA, con alcance funcional y de medicion local limitado.
+
+Evidencia:
+  * Implementacion publicada: `b7e30a2` en `main` (cinco archivos de B4).
+  * CI GitHub Actions `Rust CI #18`, ejecucion `41396386040`, disparada por `push` de `b7e30a2`: cuatro trabajos `completed/success` (Windows y Ubuntu, Rust 1.88 y stable).
+  * Paso `B4 Linux native cost smoke`: un paso `completed/success` en cada uno de los dos trabajos Ubuntu (2/2). Prueba funcional del medidor con un calentamiento y cinco muestras por modo.
+  * Windows: benchmark local de `adaptive-agent` release completado para memoria, CPU y alimentacion; dos calentamientos y diez muestras por modo, con latencia, tiempo CPU del proceso y memoria residente pico. Reporte detallado conservado solo localmente en TEMP, sin versionar ni publicar identificadores.
+  * Git comprobado en el momento de la decision: rama `main`, HEAD y `origin/main` en `b7e30a2`, sin cambios locales.
+
+Aclaracion de autorizacion:
+  * La seccion 22 excluia inicialmente cambios a CI. No obstante, el commit `b7e30a2` incorporo el paso `B4 Linux native cost smoke` en los dos trabajos Ubuntu, sin alterar la matriz de cuatro trabajos; el cambio fue mostrado al propietario antes de autorizar por separado el commit y el push. Se registra la discrepancia de alcance historica, sin presentar el cambio de CI como autorizado por el texto inicial.
+
+Limitaciones de esta aceptacion:
+  * Las mediciones describen el coste del proceso colector y la latencia completa de ejecucion, no energia en vatios o julios ni porcentaje global de CPU como coste del proceso.
+  * En diez muestras, p95 nearest-rank coincide con el maximo observado. No se aprueban presupuestos numericos universales de latencia, CPU o memoria.
+  * El smoke Linux prueba funcionamiento en runners Ubuntu, no bateria fisica, consumo energetico ni funcionamiento tras suspension/reanudacion.
+  * No se modifican proveedores Rust, contratos, dependencias o `HardwareInventory` V1 como parte de esta aceptacion documental.
+  * TASK-002 permanece ABIERTA. No se autorizan nuevas fases, servicios residentes, acciones del sistema o telemetria de red.
+  * Esta decision no autoriza automaticamente commit ni push del registro documental: ambos requieren permisos separados.

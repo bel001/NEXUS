@@ -1,6 +1,6 @@
 # TASK-002 B4 — Metodologia de coste del colector (propuesta)
 
-Estado: B4 AUTORIZADA PARA MEDICIONES. EVIDENCIA Y ACEPTACION PENDIENTES.
+Estado: FASE B4 ACEPTADA FORMALMENTE (2026-11-02). TASK-002 ABIERTA; sin presupuestos de rendimiento ni energia certificados.
 
 ## Objetivo
 
