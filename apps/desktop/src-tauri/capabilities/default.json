@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "nexus-main",
+  "description": "Sólo operaciones de ventana Tauri; sin shell, red ni filesystem.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

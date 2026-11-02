@@ -1,0 +1,38 @@
+name: NEXUS Desktop CI
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/desktop/**'
+      - 'apps/agent/**'
+      - 'crates/**'
+      - '.github/workflows/desktop-ci.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/desktop/**'
+      - 'apps/agent/**'
+      - 'crates/**'
+      - '.github/workflows/desktop-ci.yml'
+jobs:
+  desktop-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install UI dependencies from lockfile
+        working-directory: apps/desktop
+        run: npm ci --ignore-scripts --no-fund
+      - name: Security audit (high or critical)
+        working-directory: apps/desktop
+        run: npm audit --audit-level=high
+      - name: Build and typecheck UI
+        working-directory: apps/desktop
+        run: npm run build
+      - name: Test desktop backend
+        run: cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml --locked
+      - name: Check desktop backend
+        run: cargo check --manifest-path apps/desktop/src-tauri/Cargo.toml --locked
