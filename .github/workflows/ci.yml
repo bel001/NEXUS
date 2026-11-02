@@ -38,3 +38,11 @@ jobs:
 
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: B4 Linux native cost smoke
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          # Evidencia funcional; las cifras del runner NO son umbrales.
+          test -x /usr/bin/time
+          cargo build -p adaptive-agent --release --locked
+          bash scripts/benchmarks/telemetry-b4-linux.sh target/release/adaptive-agent 5 1

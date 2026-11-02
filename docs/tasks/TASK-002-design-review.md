@@ -511,3 +511,24 @@ Limitaciones:
 - No se certifica consumo, latencia ni suspend/resume.
 - No se autoriza polling permanente ni otras fases.
 - TASK-002 permanece ABIERTA.
+
+## 22. Autorizacion limitada de Fase B4 (coste del colector)
+
+Fecha: 2026-11-02.
+Autorizacion expresa del propietario: IMPLEMENTAR mediciones reproducibles de B4.
+Estado: AUTORIZADA PARA MEDICION, NO ACEPTADA.
+
+Alcance:
+- Latencia de ejecucion bajo demanda del proceso adaptive-agent.
+- Tiempo de CPU del proceso y memoria residente maxima.
+- Modos memoria, CPU y alimentacion medidos por separado.
+- Dos calentamientos y diez repeticiones por modo, p50/p95.
+- Herramientas externas de benchmark, sin modificar el colector Rust.
+- Reporte local de medidas sin identificadores; evidencia Linux pendiente.
+
+Fuera de alcance:
+- Afirmar consumo en vatios o julios sin sensor y metodologia validos.
+- Introducir sondeo residente, servicios, cambios de energia o red.
+- Cambiar HardwareInventory, TelemetrySnapshot, dependencias o CI.
+- Certificar presupuestos sin evidencia o cerrar TASK-002.
+- Commit o push automaticos. Requieren autorizacion separada.
