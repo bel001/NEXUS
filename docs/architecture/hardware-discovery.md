@@ -3,7 +3,7 @@
 ## 1. Estado y alcance
 
 - Diseño: aprobado por el propietario para implementación.
-- Implementación: correcciones HD-AUD aplicadas; validación nativa Windows pendiente.
+- Implementación: WMI y CI Windows validadas; aceptación final pendiente.
 - Baseline documental: `252d443`.
 - Plataformas: Windows 11 y Linux x86_64.
 - Nivel de acción: L0, lectura local.
@@ -12,9 +12,7 @@
 Este documento consolida el diseño V4 y las aclaraciones V4.1 y V4.2. Es la
 referencia técnica de `TASK-001`. La implementación se validó localmente en
 Linux con stable y Rust 1.88. La detección D-Bus de power-profiles-daemon
-funciona con evidencia positiva y negativa. El código Windows compila para
-MSVC con ambas toolchains, pero su ejecución nativa, CI y validación física
-continúan pendientes.
+funciona con evidencia positiva y negativa. El código Windows compiló y ejecutó pruebas WMI nativas en CI y sobre hardware Windows 11 físico. La aceptación final de TASK-001 sigue pendiente.
 
 El objetivo es producir un inventario normalizado y versionado. Una fuente
 ausente o un componente que falle no debe impedir devolver el resto. Quedan
@@ -431,3 +429,16 @@ sobre hardware Windows. El ejemplo Linux anonimizado se conserva en
   hardware Windows real.
 - power-profiles-daemon se detecta con D-Bus read-only. TLP y auto-cpufreq
   permanecen sin detector nativo aprobado.
+
+## Actualización de evidencia — 2026-11-01
+
+La ejecución nativa Windows ya no está pendiente. El proveedor
+WMI pasó pruebas sobre el hardware Windows 11 físico del propietario.
+
+La decisión de alcance para TASK-001 acepta explícitamente
+TLP y auto-cpufreq como `unavailable` sin inferir presencia,
+ausencia ni actividad. No se modifican proveedores, contratos
+ni arquitectura V4.2.
+
+Esta decisión no equivale a detección positiva de dichos gestores.
+La evidencia y la limitación se registran en la segunda auditoría.

@@ -72,5 +72,14 @@ auto-cpufreq continúan `unavailable` sin una fuente aprobada.
 La especificación aprobada está en
 `docs/architecture/hardware-discovery.md`. Los controles están implementados y
 se revisaron mediante pruebas y una captura real Linux. La captura D-Bus real
-detectó el servicio activo sin serializar valores de perfil. La compilación
-cruzada MSVC pasa, pero CI y la ejecución nativa Windows siguen pendientes.
+detectó el servicio activo sin serializar valores de perfil. La compilación MSVC, la CI y la ejecución nativa Windows fueron validadas.
+
+## Revisión posterior — 2026-11-01
+
+La captura Windows física fue revisada sin encontrar rutas
+personales, correos, direcciones MAC ni campos identificadores
+en los patrones examinados. La revisión no prueba anonimato absoluto.
+
+La limitación aceptada para TLP y auto-cpufreq evita conclusiones
+no respaldadas y no introduce nuevas operaciones o privilegios.
+Se mantiene prohibido publicar identificadores sensibles.

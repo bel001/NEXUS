@@ -22,12 +22,16 @@ No promete convertir hardware distinto en Apple Silicon ni superar universalment
 
 ## Estado del repositorio
 
-El workspace contiene la primera implementación de Hardware Discovery:
-contrato versionado, adaptador Linux, adaptador Windows mediante WMI y salida
-JSON del agente. La captura se ha compilado, probado y ejecutado sobre Linux
-Mint 22.3. El adaptador Windows dispone de pruebas de normalización, pero su
-compilación y ejecución en Windows siguen pendientes de CI. No existen
-optimizaciones que cambien el sistema.
+El workspace contiene la implementación de Hardware Discovery:
+contrato versionado, adaptador Linux, adaptador Windows mediante
+WMI y salida JSON del agente.
+
+Linux dispone de captura real y validación D-Bus.
+Windows dispone de pruebas WMI nativas aprobadas en CI y
+sobre el equipo Windows 11 físico del propietario.
+
+Hardware Discovery permanece estrictamente read-only.
+TASK-001 todavía requiere aceptación final.
 
 ## Requisitos de desarrollo
 
@@ -59,8 +63,8 @@ Leer `docs/architecture/hardware-discovery.md`, los ADR-0005 a ADR-0007 y
 `docs/tasks/TASK-001-hardware-discovery.md`.
 
 El diseño y el alcance están aprobados. La implementación local está lista
-para revisión; faltan la matriz CI, la comprobación efectiva con Rust 1.88 y
-la validación sobre hardware Windows real.
+para revisión; la matriz CI y la validación Windows física se completaron.
+TASK-001 continúa pendiente de aceptación final.
 
 ## Estructura
 
@@ -91,3 +95,14 @@ recopila números de serie, UUID, MAC, usuarios o credenciales.
 ## Licencia
 
 Pendiente de decisión. No publicar ni redistribuir el código como open source hasta elegir y añadir una licencia.
+
+## Validación TASK-001 — noviembre de 2026
+
+- CI Ubuntu 24.04 y Windows, con Rust 1.88 y stable: PASS.
+- WMI real: verificado en runners y en Windows 11 físico.
+- Hardware Discovery permanece estrictamente read-only.
+- power-profiles-daemon: consulta D-Bus validada en Linux.
+- TLP y auto-cpufreq: `unavailable` por limitación aprobada.
+- Captura Windows anonimizada generada; publicación pendiente.
+- TASK-001 todavía requiere aceptación final.
+- La licencia del proyecto sigue pendiente de decisión.

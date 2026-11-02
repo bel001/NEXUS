@@ -1,6 +1,6 @@
 # TASK-001 — Hardware Discovery read-only
 
-- Estado: Correcciones implementadas; validación nativa Windows, CI y aceptación pendientes
+- Estado: CI y validación física Windows verificadas; documentación y aceptación final pendientes
 - Prioridad: P0
 - Plataforma: Windows 11 + Linux x86_64
 - Tipo: solo lectura
@@ -88,27 +88,37 @@ Un valor ausente nunca se convierte en `0`, cadena vacía engañosa o valor inve
 
 ## Criterios de aceptación
 
-- [ ] El mismo contrato de salida funciona en Windows y Linux (compilación MSVC verificada; ejecución nativa pendiente).
+- [x] El mismo contrato de salida funciona en Windows y Linux; CI y captura Windows física verificadas.
 - [x] La detección no modifica el sistema.
 - [x] No requiere admin/root en el flujo normal validado en Linux.
 - [x] Devuelve disponibilidad por campo.
 - [x] Maneja fallos parciales.
 - [x] No hay llamadas de red.
-- [ ] Tests automatizados pasan en CI Windows y Ubuntu.
+- [x] Tests automatizados pasan en CI Windows y Ubuntu, con Rust 1.88 y stable.
 - [x] README documenta limitaciones conocidas.
 - [ ] Se adjunta ejemplo JSON real anonimizado de cada plataforma.
 - [x] Se informa el consumo del proceso durante una sesión de descubrimiento.
-- [ ] Se detectan gestores energéticos activos mediante evidencia nativa aprobada (power-profiles-daemon cubierto; TLP/auto-cpufreq pendientes).
+- [x] Criterio de gestores energéticos acotado por decisión expresa del propietario: power-profiles-daemon se detecta por D-Bus; TLP y auto-cpufreq se mantienen unavailable, sin afirmar detección positiva. Limitación aceptada para TASK-001.
 
-Validación local del 30 de octubre de 2026: captura real en Linux Mint 22.3,
-salida JSON analizada correctamente, 2.5 MiB de RSS máximo aproximado y 0.01 s
-de tiempo de pared en una ejecución caliente. Es una medición puntual,
-no un benchmark. La captura Linux anonimizada está en
-`docs/examples/hardware-inventory-linux.anonymized.json`. No existe todavía
-La validación local posterior ejecutó 56 pruebas con Rust 1.88 y stable,
-captura D-Bus real y compilación/Clippy cruzados para Windows MSVC. No existe
-ejemplo real Windows ni validación física Windows; por ello los criterios
-multiplataforma permanecen abiertos.
+Validación local del 30 de octubre de 2026: captura real Linux Mint
+22.3, JSON validado, aproximadamente 2.5 MiB de RSS máximo y
+0.01 s de ejecución caliente. Es una medición puntual, no un benchmark.
+El ejemplo Linux anonimizado se conserva en
+`docs/examples/hardware-inventory-linux.anonymized.json`.
+
+Posteriormente se validó D-Bus real y la compilación MSVC.
+La matriz CI Ubuntu/Windows con Rust 1.88 y stable pasó.
+
+El 1 de noviembre de 2026 se ejecutó el proveedor WMI en el
+Windows 11 físico del propietario. Se verificaron CPU, memoria,
+GPU, batería, almacenamiento, esquema JSON y cero incidencias.
+La captura Windows se mantiene local y sin versionar.
+
+La limitación de TLP y auto-cpufreq como `unavailable` fue
+aceptada expresamente para TASK-001. Esto no equivale a
+detección positiva de esos gestores.
+
+La aceptación final de TASK-001 permanece pendiente.
 
 ## Entrega esperada
 
@@ -130,3 +140,17 @@ Se conservan `adaptive-domain`, `adaptive-hardware-discovery`,
 ## Definición de terminado
 
 Ver `docs/tasks/definition-of-done.md`.
+
+## Actualización de aceptación — 1 de noviembre de 2026
+
+- Windows 11 físico: captura WMI real verificada, no simulada.
+- Rust 1.88 y stable: pruebas Windows satisfactorias.
+- CPU, memoria, GPU, batería y almacenamiento disponibles.
+- JSON `schema_version = 1`, timestamp común e incidencias vacías.
+- SHA-256 del validador confirmado tras normalizar CRLF a LF.
+- HD-AUD-001: alcance reducido con aprobación expresa del propietario.
+- TLP y auto-cpufreq: `unavailable` sin valor positivo o negativo inventado.
+- HD-AUD-002: PASS técnico sobre hardware físico.
+- El ejemplo Windows permanece local y sin versionar hasta autorizar su publicación.
+- La revisión de privacidad es preliminar; no garantiza anonimato absoluto.
+- TASK-001 no se declara terminada hasta la aceptación final de la entrega y la resolución del ejemplo pendiente de versionar.

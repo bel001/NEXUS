@@ -616,3 +616,22 @@ TASK-001 **no** se declara terminada ni aceptada. Siguen pendientes:
    `windows-latest`, añadir `permissions: contents: read`, `concurrency` y
    `timeout-minutes`, y evaluar el pin por SHA de las acciones.
 4. No declarar TASK-001 aceptada hasta la validación del propietario.
+
+## 21. Segunda auditoría documental — 2026-11-01
+
+- HEAD de partida Windows: `3259a22`, rama `main`.
+- Windows 11 físico: WMI real y captura JSON verificadas.
+- Rust Windows: 47 pruebas correctas y 1 ignorada por toolchain
+  en la ejecución inicial del validador.
+- Captura: `schema_version=1`, observaciones coherentes,
+  cero incidencias.
+- SHA-256 normalizado del validador:
+  `b93db63010a12d030cb3087baf3852cefb2630a6538e01ef64965404ea833052`.
+- La diferencia del hash inicial fue causada por CRLF frente a LF.
+- HD-AUD-001: limitación aceptada por el propietario;
+  TLP y auto-cpufreq siguen `unavailable`.
+- HD-AUD-002: evidencia física suficiente para PASS técnico.
+- HD-AUD-003 a HD-AUD-007: PASS previamente documentados.
+- La captura Windows permanece sin versionar ni publicar.
+- No se cambió el código, las dependencias ni el workflow.
+- Pendiente: publicación autorizada del ejemplo y aceptación final.
