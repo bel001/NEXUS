@@ -1,6 +1,6 @@
 # TASK-002 - Revision de contrato y arquitectura
 
-Estado: Fases A, B1, B2 y B3 aceptadas; TASK-002 ABIERTA.
+Estado: Fases A, B1, B2, B3 y B4 aceptadas; Fase C de verificacion de cierre; TASK-002 ABIERTA.
 Baseline: 66a37a7.
 Documento principal: TASK-002-telemetry-read-only.md.
 
@@ -555,3 +555,15 @@ Limitaciones de esta aceptacion:
   * No se modifican proveedores Rust, contratos, dependencias o `HardwareInventory` V1 como parte de esta aceptacion documental.
   * TASK-002 permanece ABIERTA. No se autorizan nuevas fases, servicios residentes, acciones del sistema o telemetria de red.
   * Esta decision no autoriza automaticamente commit ni push del registro documental: ambos requieren permisos separados.
+
+## 24. Fase C - verificacion de cierre y conciliacion documental
+
+Fecha: 2026-11-02. Autorizacion conjunta expresa del propietario: `AUTORIZO FASE C DE VERIFICACIÓN DE CIERRE TASK-002, COMMIT Y PUSH`.
+
+Alcance ejecutable: contrastar criterios de `TASK-002-telemetry-read-only.md`, reconciliar los estados historicos de A/B1/B2/B3/B4, revisar pruebas deterministas existentes y evidencias nativas, consignar limites de suspension/reanudacion y de coste, ejecutar controles y publicar exclusivamente documentacion si se superan. No se autoriza la aceptacion final ni el cierre de TASK-002.
+
+Base de evidencia: implementacion y aceptacion B4 publicadas, commit `8ff0e52`, CI `41498563272` (4/4 y Linux smoke 2/2); pruebas de calculo CPU del dominio con regresiones, delta cero y overflow. Esas pruebas NO certifican la deteccion fisica de suspend/resume. Los numeros de B4 son medidas locales, no umbrales universales y no incluyen vatios o julios.
+
+Resultado de auditoria: se conserva la politica solo lectura y el contrato HardwareInventory V1 sin cambios; sin nuevas dependencias, red del producto, privilegios ni acciones correctivas. La fase C es documental porque ya hay pruebas deterministas para los errores identificados; cualquier soporte adicional de deteccion real de suspension requerira especificacion y pruebas propias, fuera de este incremento.
+
+Decision: FASE C DOCUMENTAL AUTORIZADA PARA COMMIT Y PUSH, CON VALIDACION CONDICIONAL. TASK-002 ABIERTA. El cierre final, los presupuestos numericos y cualquier fase adicional requieren decisiones expresas nuevas.

@@ -1,6 +1,6 @@
 # TASK-002 — Telemetria local read-only
 
-- Estado: IMPLEMENTACION PARCIAL; TASK-002 ABIERTA
+- Estado: Fases A, B1, B2, B3 y B4 ACEPTADAS; Fase C en verificacion; TASK-002 ABIERTA
 - Prioridad propuesta: P0
 - Plataforma objetivo: Windows 11 y Linux x86_64
 - Dependencia: TASK-001 aceptada
@@ -782,3 +782,42 @@ https://doc.rust-lang.org/cargo/commands/cargo-metadata.html
 https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getsystemtimes
 https://www.kernel.org/doc/html/latest/filesystems/proc.html
 https://docs.kernel.org/power/power_supply_class.html
+
+## 25. Fase C - auditoria de criterios de cierre (2026-11-02)
+
+Estado: REVISION DE CIERRE REALIZADA; TASK-002 ABIERTA. Esta seccion prevalece como resumen de estado sobre las propuestas historicas de las secciones anteriores, que se conservan como registro de diseno y no se reescriben retroactivamente. La autorizacion conjunta recibida permite la auditoria C, sus comprobaciones, commit y push; no autoriza el cierre final de TASK-002.
+
+### Evidencia consolidada hasta la base 8ff0e52
+
+- Fase A: contrato tipado de telemetria aceptado (`e17149d`).
+- B1: memoria Windows/Linux aceptada (`6565d34`).
+- B2: CPU bajo demanda Windows/Linux aceptada (`144a6be`).
+- B3: alimentacion y bateria aceptada (`163b968`).
+- B4: medicion de coste del colector aceptada y publicada (`8ff0e52`). La ejecucion `Rust CI #19` (`41498563272`) verifico cuatro trabajos y los dos smoke Linux.
+- Se identifican pruebas deterministas ya presentes en `crates/domain/src/telemetry.rs`: `cpu_linux_two_samples_and_iowait`, `cpu_linux_detects_overflow`, `wmi_inverse_timer_checked_deltas` y `cpu_window_requires_global_scope_and_positive_duration`. Comprueban errores de muestras, contadores y ventanas, pero NO detectan por si solas una suspension fisica.
+
+### Matriz de los 13 criterios candidatos (seccion 7)
+
+1. Diseno tecnico: evidencia de aceptacion por fases; aceptacion integral de TASK-002 PENDIENTE.
+2. Fuentes nativas Windows/Linux: documentadas y comprobadas en los alcances B1-B3.
+3. Contrato tipado/versionado: implementado y aceptado en A.
+4. Fallos y ausencias: representados mediante estados tipados, con pruebas.
+5. Fixtures y pruebas deterministas: evidencia existente; no duplicar pruebas sin identificar un caso faltante.
+6. Sin cambios del sistema: restriccion observada dentro del alcance implementado, no auditoria exhaustiva del entorno.
+7. Sin elevacion ni telemetria de red: restriccion de producto; las herramientas externas de desarrollo/CI son distintas del colector.
+8. Coste del colector: medido en Windows; Linux smoke funcional. No se mide energia.
+9. MSRV y stable: CI 4/4 del commit B4 documental.
+10. CI Windows/Ubuntu: PASS 4/4 en ejecucion 41498563272.
+11. Evidencia nativa vs fixtures: diferenciada; runner Linux no representa un portatil con bateria real.
+12. Documentacion y limites: reconciliados por esta fase C, sujetos a CI del nuevo commit.
+13. Aceptacion final de TASK-002: PENDIENTE de decision expresa del propietario.
+
+### Limitaciones y decisiones pendientes para cierre
+
+- Suspension/reanudacion: las pruebas de regresion, delta cero y ventana invalida cubren discontinuidades detectables; no existe evidencia suficiente para certificar deteccion universal de suspension/reanudacion ni una prueba fisica despues de resume. No afirmar garantia.
+- Rendimiento: p50/p95 de Windows provienen de 10 muestras por modo, con p95 nearest-rank igual al maximo observado. No fijar limites contractuales universales de latencia, CPU o RAM sin criterio aprobado y mas evidencia.
+- Energia: NO MEDIDA en vatios ni julios. No afirmar presupuesto energetico cumplido.
+- Linux con bateria fisica y escenarios especiales: no certificados por los runners CI.
+- Esta fase C no modifica Rust, Cargo.lock, dependencias, CI, HardwareInventory V1, politicas ni configuracion del equipo.
+
+Decision C: documentar la evidencia y conservar TASK-002 ABIERTA. La CI del commit C se comprueba despues del push; el resultado no implica aceptacion final automatica.

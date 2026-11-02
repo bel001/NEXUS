@@ -1,4 +1,4 @@
-# TASK-002 B4 — Metodologia de coste del colector (propuesta)
+# TASK-002 B4 — Metodologia de coste del colector (B4 aceptada)
 
 Estado: FASE B4 ACEPTADA FORMALMENTE (2026-11-02). TASK-002 ABIERTA; sin presupuestos de rendimiento ni energia certificados.
 
@@ -39,4 +39,4 @@ Windows: medicion nativa local completada, con 2 calentamientos y 10 muestras po
 
 Linux: se habilita en Ubuntu CI una prueba funcional con 1 calentamiento y 5 muestras por modo. Los resultados del runner no representan un presupuesto de latencia o consumo; su exito debe confirmarse en el commit publicado.
 
-Aceptacion B4 y presupuesto energetico: PENDIENTES. No se han medido vatios ni julios. No publicar informes privados ni identificar equipos. Si se desea publicar una tabla resumida, revisar primero su privacidad. No incluir rutas personales, nombres de usuarios, seriales ni valores de telemetria del equipo.
+Aceptacion B4: COMPLETADA (2026-11-02), commit 8ff0e52 y CI 41498563272 (4/4 y smoke Linux 2/2). Presupuesto energetico: NO MEDIDO NI CERTIFICADO. No se han medido vatios ni julios. No publicar informes privados ni identificar equipos. Si se desea publicar una tabla resumida, revisar primero su privacidad. No incluir rutas personales, nombres de usuarios, seriales ni valores de telemetria del equipo.
