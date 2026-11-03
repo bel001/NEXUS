@@ -24,3 +24,11 @@ Primera entrega pre-alpha. Sin optimización automática, monitoreo residente, m
 - La compilacion de escritorio de produccion debe realizarse desde `apps/desktop` con `npm run tauri -- build --no-bundle`, no solo con `cargo build --release`: la CLI incorpora los archivos del frontend.
 - Desktop CI verificara la compilacion de produccion y la existencia de `nexus-desktop.exe` en Windows, sin generar instaladores.
 - Esta verificacion manual no supone la aceptacion formal de TASK-004; la nueva CI debe comprobarse por commit publicado.
+## Actualizacion automatica opcional (2026-11-03)
+- Intervalos elegibles: desactivada (predeterminada), 5, 10 o 30 segundos. No se guardan entre ejecuciones.
+- Una activacion solicita las cinco lecturas existentes, secuencialmente, sin solapamiento ni nuevos comandos Rust.
+- Solo se programan nuevas lecturas mientras la ventana este visible y tenga foco. Se suspende al ocultar o desenfocar; una lectura ya iniciada puede terminar.
+- No se crean servicios, procesos residentes, tareas programadas, historial, permisos nuevos ni telemetria remota.
+- Actualizar ahora y Actualizar todo siguen disponibles. Cada dato conserva su estado y hora de lectura.
+- Validaciones obligatorias: npm build, Tauri CLI production, integridad de lockfiles, CI GitHub por SHA y prueba manual de los intervalos y pausa por foco.
+- Esta ampliacion no implica aceptacion formal de TASK-004 ni de otras tareas.

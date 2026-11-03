@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 
 type Key = 'cpu' | 'memory' | 'power' | 'inventory' | 'recommendations';
@@ -65,7 +65,9 @@ export default function App() {
   const [selected, setSelected] = useState<Key>('cpu');
   const [states, setStates] = useState<Partial<Record<Key, State>>>({});
   const [busy, setBusy] = useState<Key | 'all' | null>(null);
-  async function readSection(key: Key): Promise<void> {
+  const [autoIntervalSeconds, setAutoIntervalSeconds] = useState<0 | 5 | 10 | 30>(0);
+  const inFlight = useRef(false);
+  const readSection = useCallback(async (key: Key): Promise<void> => {
     try {
       const command = sections.find(s => s.key === key)!.command;
       const data: unknown = await invoke(command);
@@ -78,21 +80,57 @@ export default function App() {
         (/command.*not found/i.test(raw) ? 'command_not_found' : 'unclassified_invoke_error');
       setStates(old => ({ ...old, [key]: { error: `Lectura ${key} fallida. Código: ${diagnostic}.` } }));
     }
-  }
-  async function refresh(key: Key): Promise<void> {
-    if (busy !== null) return;
+  }, []);
+
+  const refresh = useCallback(async (key: Key): Promise<void> => {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setBusy(key);
-    try { await readSection(key); } finally { setBusy(null); }
-  }
-  async function refreshAll(): Promise<void> {
-    if (busy !== null) return;
+    try { await readSection(key); }
+    finally { inFlight.current = false; setBusy(null); }
+  }, [readSection]);
+
+  const refreshAll = useCallback(async (): Promise<void> => {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setBusy('all');
     try {
       for (const section of sections) {
         await readSection(section.key);
       }
-    } finally { setBusy(null); }
-  }
+    } finally { inFlight.current = false; setBusy(null); }
+  }, [readSection]);
+
+  useEffect(() => {
+    if (autoIntervalSeconds === 0) return;
+    let timer: number | undefined;
+    let stopped = false;
+    const isActive = () => document.visibilityState === 'visible' && document.hasFocus();
+    const cancel = () => {
+      if (timer !== undefined) { window.clearTimeout(timer); timer = undefined; }
+    };
+    const schedule = () => {
+      if (stopped || !isActive() || timer !== undefined) return;
+      timer = window.setTimeout(async () => {
+        timer = undefined;
+        if (stopped || !isActive()) return;
+        await refreshAll();
+        if (!stopped) schedule();
+      }, autoIntervalSeconds * 1000);
+    };
+    const onActivity = () => { cancel(); schedule(); };
+    document.addEventListener('visibilitychange', onActivity);
+    window.addEventListener('focus', onActivity);
+    window.addEventListener('blur', onActivity);
+    schedule();
+    return () => {
+      stopped = true;
+      cancel();
+      document.removeEventListener('visibilitychange', onActivity);
+      window.removeEventListener('focus', onActivity);
+      window.removeEventListener('blur', onActivity);
+    };
+  }, [autoIntervalSeconds, refreshAll]);
   const current = sections.find(s => s.key === selected)!;
   const selectedState = states[selected];
   const activeMetric = selectedState?.data ? metric(selectedState.data, selected) : undefined;
@@ -106,13 +144,16 @@ export default function App() {
     <main className="main">
       <header className="topbar"><div className="breadcrumb">PLATAFORMA / <span>RESUMEN</span></div><div className="top-right"><span className="local-indicator"/> ENTORNO LOCAL <span className="version">PRE-ALPHA · v0.1</span></div></header>
       <div className="content">
-        <div className="overline">DIAGNÓSTICO · SOLO LECTURA</div><h1>Tu equipo, con más claridad<span>.</span></h1><p className="intro">Observa indicadores reales y recibe recomendaciones conservadoras. Cada medición se realiza únicamente cuando tú la solicitas.</p>
-        <section className="overview"><div className="section-header"><h2>Estado del sistema</h2><button className="refresh" type="button" onClick={()=>void refreshAll()} disabled={busy !== null}><span>↻</span> {busy === 'all' ? 'Midiendo todo…' : 'Actualizar todo'}</button></div><div className="metric-grid">{sections.slice(0,4).map(s => {
+        <div className="overline">DIAGNÓSTICO · SOLO LECTURA</div><h1>Tu equipo, con más claridad<span>.</span></h1><p className="intro">Observa indicadores reales y recibe recomendaciones conservadoras. Actualiza manualmente o activa lecturas periódicas mientras NEXUS esté visible y en primer plano.</p>
+        <section className="overview"><div className="section-header"><h2>Estado del sistema</h2><div className="overview-actions"><label className="auto-interval-control" htmlFor="nexus-auto-refresh">Automática
+  <select id="nexus-auto-refresh" aria-label="Intervalo de actualización automática" value={autoIntervalSeconds} onChange={event => setAutoIntervalSeconds(Number(event.target.value) as 0 | 5 | 10 | 30)}>
+    <option value={0}>Desactivada</option><option value={5}>Cada 5 s</option><option value={10}>Cada 10 s</option><option value={30}>Cada 30 s</option>
+  </select></label><button className="refresh" type="button" onClick={()=>void refreshAll()} disabled={busy !== null}><span>↻</span> {busy === 'all' ? 'Midiendo todo…' : 'Actualizar todo'}</button></div></div><p className="auto-refresh-note">Auto: solo con esta ventana visible y activa; sin historial ni procesos residentes.</p><div className="metric-grid">{sections.slice(0,4).map(s => {
           const st = states[s.key]; const met = st?.data ? metric(st.data,s.key) : undefined;
           return <button key={s.key} className={'metric-card ' + (selected===s.key?'selected':'')} onClick={()=>setSelected(s.key)}><div className="metric-head"><span className="metric-icon">{s.glyph}</span><span className="metric-status">{met ? statusLabel(met.status) : 'SIN MEDIR'}</span></div><div className="metric-name">{s.title}</div><div className="metric-value">{met?.main ?? '—'}</div><div className="metric-foot">{met?.small ?? s.subtitle}</div></button>;
         })}</div></section>
         <section className="workspace"><div className="workspace-heading"><div><div className="section-kicker">CENTRO DE OBSERVACIÓN</div><h2>{current.title}</h2><p>{current.subtitle}</p></div><button className="refresh" onClick={()=>void refresh(selected)} disabled={busy !== null}><span>{busy===selected?'◌':'↻'}</span> {busy===selected?'Midiendo…':'Actualizar ahora'}</button></div>
-          {!selectedState?.data && !selectedState?.error ? <div className="waiting"><span className="waiting-icon">◎</span><h3>Listo para una medición</h3><p>Presiona «Actualizar ahora» para consultar esta sección. No hay capturas en segundo plano.</p></div> : <div className="report-body">
+          {!selectedState?.data && !selectedState?.error ? <div className="waiting"><span className="waiting-icon">◎</span><h3>Listo para una medición</h3><p>Presiona «Actualizar ahora» para consultar esta sección. También puedes activar la actualización automática desde el resumen.</p></div> : <div className="report-body">
             {selectedState?.error && <div role="alert" className="error-box">{selectedState.error}</div>}
             {activeMetric && <div className="report-summary"><div><span>ÚLTIMA LECTURA</span><strong>{activeMetric.main}</strong><small>{activeMetric.small}</small></div><div className="readtime">{selectedState?.time ? `Consultado a las ${selectedState.time}` : 'Sin lectura'}</div></div>}
             {selectedState?.data != null && <Details section={selected} value={selectedState.data}/>}
