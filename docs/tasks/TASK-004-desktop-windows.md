@@ -18,3 +18,9 @@ Estado: IMPLEMENTACIÓN CONDICIONADA A COMPILACIÓN Y CI; aceptación formal pen
 
 ## Límites
 Primera entrega pre-alpha. Sin optimización automática, monitoreo residente, métricas sostenidas, estimación energética ni instalaciones MSI. Los umbrales de TASK-003 siguen siendo heurísticos; las ausencias se muestran como no disponibles.
+## Validacion manual de Windows 2026-11-03
+- El propietario confirma que la GUI real abre y que el boton manual `Actualizar todo` muestra resultados en procesador, memoria, alimentacion, inventario y recomendaciones.
+- Se conserva `Actualizar ahora` por seccion, sin sondeo residente, acciones automaticas o telemetria remota.
+- La compilacion de escritorio de produccion debe realizarse desde `apps/desktop` con `npm run tauri -- build --no-bundle`, no solo con `cargo build --release`: la CLI incorpora los archivos del frontend.
+- Desktop CI verificara la compilacion de produccion y la existencia de `nexus-desktop.exe` en Windows, sin generar instaladores.
+- Esta verificacion manual no supone la aceptacion formal de TASK-004; la nueva CI debe comprobarse por commit publicado.

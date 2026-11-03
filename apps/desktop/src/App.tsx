@@ -64,17 +64,33 @@ function Details({ section, value }: { section: Key; value: unknown }) {
 export default function App() {
   const [selected, setSelected] = useState<Key>('cpu');
   const [states, setStates] = useState<Partial<Record<Key, State>>>({});
-  const [busy, setBusy] = useState<Key | null>(null);
-  async function refresh(key: Key) {
-    if (busy) return;
-    setBusy(key);
+  const [busy, setBusy] = useState<Key | 'all' | null>(null);
+  async function readSection(key: Key): Promise<void> {
     try {
       const command = sections.find(s => s.key === key)!.command;
       const data: unknown = await invoke(command);
-      if (obj(data).schema_version !== 1) throw new Error('Versión del contrato no compatible');
+      if (obj(data).schema_version !== 1) throw new Error('invalid_schema_version');
       setStates(old => ({ ...old, [key]: { data, time: new Date().toLocaleTimeString('es-PE') } }));
-    } catch {
-      setStates(old => ({ ...old, [key]: { ...old[key], error: 'La lectura no se completó. Revisa los permisos y vuelve a solicitarla.' } }));
+    } catch (reason) {
+      const raw = typeof reason === 'string' ? reason : reason instanceof Error ? reason.message : '';
+      const known = ['serialization_failed', 'invalid_json', 'unsupported_inventory_schema', 'invalid_schema_version'];
+      const diagnostic = known.find(code => raw.includes(code)) ??
+        (/command.*not found/i.test(raw) ? 'command_not_found' : 'unclassified_invoke_error');
+      setStates(old => ({ ...old, [key]: { error: `Lectura ${key} fallida. Código: ${diagnostic}.` } }));
+    }
+  }
+  async function refresh(key: Key): Promise<void> {
+    if (busy !== null) return;
+    setBusy(key);
+    try { await readSection(key); } finally { setBusy(null); }
+  }
+  async function refreshAll(): Promise<void> {
+    if (busy !== null) return;
+    setBusy('all');
+    try {
+      for (const section of sections) {
+        await readSection(section.key);
+      }
     } finally { setBusy(null); }
   }
   const current = sections.find(s => s.key === selected)!;
@@ -91,7 +107,7 @@ export default function App() {
       <header className="topbar"><div className="breadcrumb">PLATAFORMA / <span>RESUMEN</span></div><div className="top-right"><span className="local-indicator"/> ENTORNO LOCAL <span className="version">PRE-ALPHA · v0.1</span></div></header>
       <div className="content">
         <div className="overline">DIAGNÓSTICO · SOLO LECTURA</div><h1>Tu equipo, con más claridad<span>.</span></h1><p className="intro">Observa indicadores reales y recibe recomendaciones conservadoras. Cada medición se realiza únicamente cuando tú la solicitas.</p>
-        <section className="overview"><div className="section-header"><h2>Estado del sistema</h2><span>DATOS BAJO DEMANDA</span></div><div className="metric-grid">{sections.slice(0,4).map(s => {
+        <section className="overview"><div className="section-header"><h2>Estado del sistema</h2><button className="refresh" type="button" onClick={()=>void refreshAll()} disabled={busy !== null}><span>↻</span> {busy === 'all' ? 'Midiendo todo…' : 'Actualizar todo'}</button></div><div className="metric-grid">{sections.slice(0,4).map(s => {
           const st = states[s.key]; const met = st?.data ? metric(st.data,s.key) : undefined;
           return <button key={s.key} className={'metric-card ' + (selected===s.key?'selected':'')} onClick={()=>setSelected(s.key)}><div className="metric-head"><span className="metric-icon">{s.glyph}</span><span className="metric-status">{met ? statusLabel(met.status) : 'SIN MEDIR'}</span></div><div className="metric-name">{s.title}</div><div className="metric-value">{met?.main ?? '—'}</div><div className="metric-foot">{met?.small ?? s.subtitle}</div></button>;
         })}</div></section>

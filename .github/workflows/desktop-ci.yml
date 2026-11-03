@@ -36,3 +36,12 @@ jobs:
         run: cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml --locked
       - name: Check desktop backend
         run: cargo check --manifest-path apps/desktop/src-tauri/Cargo.toml --locked
+      - name: Build production desktop with Tauri CLI
+        working-directory: apps/desktop
+        run: npm run tauri -- build --no-bundle --ci
+      - name: Verify production executable exists
+        shell: pwsh
+        run: |
+          if (-not (Test-Path -LiteralPath 'apps/desktop/src-tauri/target/release/nexus-desktop.exe' -PathType Leaf)) {
+            throw 'Missing NEXUS production executable'
+          }
